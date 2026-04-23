@@ -479,7 +479,10 @@
       </div>
 
       <div class="form-group">
-        <label for="u-start">Datum začátku závazku</label>
+        <label for="u-start">
+          Datum obnovy předplatného
+          <span class="label-sub"> — příští renewal date z Partner Center</span>
+        </label>
         <input type="date" id="u-start">
       </div>
 
@@ -545,7 +548,10 @@
       </div>
 
       <div class="form-group">
-        <label for="a-start">Datum začátku závazku</label>
+        <label for="a-start">
+          Datum obnovy předplatného
+          <span class="label-sub"> — příští renewal date z Partner Center</span>
+        </label>
         <input type="date" id="a-start">
       </div>
 
@@ -642,30 +648,23 @@
     return Math.round(ms / 86400000) + 1;
   }
 
-  // Find boundaries of the current billing cycle containing changeDate
-  function getCycle(startDate, changeDate, type) {
+  // Derive current billing cycle from renewal date (= first day of NEXT cycle).
+  // Partner reads this directly from Partner Center — billing date alignment is
+  // already reflected, no need to know the original start date.
+  function getCycle(renewalDate, type) {
+    // Last day of current cycle = day before renewal
+    const ce = new Date(renewalDate);
+    ce.setDate(ce.getDate() - 1);
+
+    // First day of current cycle = renewal minus one period
+    const cs = new Date(renewalDate);
     if (type === 'monthly') {
-      let cs = new Date(startDate);
-      // Advance month-by-month until next cycle would exceed changeDate
-      while (true) {
-        const ns = new Date(cs.getFullYear(), cs.getMonth() + 1, cs.getDate());
-        if (ns > changeDate) break;
-        cs = ns;
-      }
-      // cycleEnd = day before next cycle start
-      const ce = new Date(cs.getFullYear(), cs.getMonth() + 1, cs.getDate() - 1);
-      return { cs, ce };
+      cs.setMonth(cs.getMonth() - 1);
     } else {
-      // Annual
-      let cs = new Date(startDate);
-      while (true) {
-        const ns = new Date(cs.getFullYear() + 1, cs.getMonth(), cs.getDate());
-        if (ns > changeDate) break;
-        cs = ns;
-      }
-      const ce = new Date(cs.getFullYear() + 1, cs.getMonth(), cs.getDate() - 1);
-      return { cs, ce };
+      cs.setFullYear(cs.getFullYear() - 1);
     }
+
+    return { cs, ce };
   }
 
   // Daily rate: annualPrice / 12 / daysInCycle (monthly) or annualPrice / daysInCycle (annual)
@@ -719,29 +718,29 @@
   // ── CALCULATOR 1: Upgrade ───────────────────────────────
   function calcUpgrade() {
     clearErr('u');
-    const type      = billing.u;
-    const priceOld  = parseFloat(document.getElementById('u-price-old').value);
-    const priceNew  = parseFloat(document.getElementById('u-price-new').value);
-    const startVal  = document.getElementById('u-start').value;
-    const changeVal = document.getElementById('u-change').value;
-    const users     = parseInt(document.getElementById('u-users').value);
+    const type        = billing.u;
+    const priceOld    = parseFloat(document.getElementById('u-price-old').value);
+    const priceNew    = parseFloat(document.getElementById('u-price-new').value);
+    const renewalVal  = document.getElementById('u-start').value;
+    const changeVal   = document.getElementById('u-change').value;
+    const users       = parseInt(document.getElementById('u-users').value);
 
-    if (!startVal)              return showErr('u', 'Zadejte datum začátku závazku.');
-    if (!changeVal)             return showErr('u', 'Zadejte datum upgradu.');
+    if (!renewalVal)  return showErr('u', 'Zadejte datum obnovy předplatného (renewal date).');
+    if (!changeVal)   return showErr('u', 'Zadejte datum upgradu.');
     if (isNaN(priceOld) || priceOld <= 0) return showErr('u', 'Zadejte platnou cenu aktuální licence (kladné číslo).');
     if (isNaN(priceNew) || priceNew <= 0) return showErr('u', 'Zadejte platnou cenu nové licence (kladné číslo).');
     if (isNaN(users)   || users < 1)      return showErr('u', 'Zadejte platný počet uživatelů (min. 1).');
 
-    const startDate  = parseDate(startVal);
-    const changeDate = parseDate(changeVal);
+    const renewalDate = parseDate(renewalVal);
+    const changeDate  = parseDate(changeVal);
 
-    if (changeDate < startDate) return showErr('u', 'Datum upgradu nemůže být před datem začátku závazku.');
+    if (changeDate >= renewalDate) return showErr('u', 'Datum upgradu musí být před datem obnovy předplatného.');
 
-    const { cs, ce } = getCycle(startDate, changeDate, type);
+    const { cs, ce } = getCycle(renewalDate, type);
     const totalDays  = daysBetween(cs, ce);
     const remDays    = daysBetween(changeDate, ce);
 
-    if (remDays <= 0) return showErr('u', 'Datum upgradu je mimo aktuální fakturační cyklus — zkontrolujte data.');
+    if (changeDate < cs) return showErr('u', 'Datum upgradu předchází začátku aktuálního cyklu. Zkontrolujte renewal date.');
 
     const drOld  = dailyRate(priceOld, totalDays, type);
     const drNew  = dailyRate(priceNew, totalDays, type);
@@ -771,29 +770,29 @@
   // ── CALCULATOR 2: Add Seats ─────────────────────────────
   function calcAddSeats() {
     clearErr('a');
-    const type      = billing.a;
-    const price     = parseFloat(document.getElementById('a-price').value);
-    const startVal  = document.getElementById('a-start').value;
-    const changeVal = document.getElementById('a-change').value;
-    const curUsers  = parseInt(document.getElementById('a-users-cur').value);
-    const addUsers  = parseInt(document.getElementById('a-users-add').value);
+    const type       = billing.a;
+    const price      = parseFloat(document.getElementById('a-price').value);
+    const renewalVal = document.getElementById('a-start').value;
+    const changeVal  = document.getElementById('a-change').value;
+    const curUsers   = parseInt(document.getElementById('a-users-cur').value);
+    const addUsers   = parseInt(document.getElementById('a-users-add').value);
 
-    if (!startVal)              return showErr('a', 'Zadejte datum začátku závazku.');
-    if (!changeVal)             return showErr('a', 'Zadejte datum navýšení licencí.');
-    if (isNaN(price) || price <= 0)     return showErr('a', 'Zadejte platnou cenu licence (kladné číslo).');
+    if (!renewalVal) return showErr('a', 'Zadejte datum obnovy předplatného (renewal date).');
+    if (!changeVal)  return showErr('a', 'Zadejte datum navýšení licencí.');
+    if (isNaN(price) || price <= 0)      return showErr('a', 'Zadejte platnou cenu licence (kladné číslo).');
     if (isNaN(curUsers) || curUsers < 1) return showErr('a', 'Zadejte platný stávající počet uživatelů (min. 1).');
     if (isNaN(addUsers) || addUsers < 1) return showErr('a', 'Zadejte platný počet přidávaných uživatelů (min. 1).');
 
-    const startDate  = parseDate(startVal);
-    const changeDate = parseDate(changeVal);
+    const renewalDate = parseDate(renewalVal);
+    const changeDate  = parseDate(changeVal);
 
-    if (changeDate < startDate) return showErr('a', 'Datum navýšení nemůže být před datem začátku závazku.');
+    if (changeDate >= renewalDate) return showErr('a', 'Datum navýšení musí být před datem obnovy předplatného.');
 
-    const { cs, ce } = getCycle(startDate, changeDate, type);
+    const { cs, ce } = getCycle(renewalDate, type);
     const totalDays  = daysBetween(cs, ce);
     const remDays    = daysBetween(changeDate, ce);
 
-    if (remDays <= 0) return showErr('a', 'Datum navýšení je mimo aktuální fakturační cyklus — zkontrolujte data.');
+    if (changeDate < cs) return showErr('a', 'Datum navýšení předchází začátku aktuálního cyklu. Zkontrolujte renewal date.');
 
     const dr     = dailyRate(price, totalDays, type);
     const charge = dr * remDays * addUsers;
