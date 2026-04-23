@@ -483,8 +483,8 @@
 
       <div class="form-group">
         <label for="u-start">
-          Datum obnovy předplatného
-          <span class="label-sub"> — příští renewal date ze StreamOne ION</span>
+          <span id="u-start-label">Příští datum měsíčního účtování</span>
+          <span class="label-sub" id="u-start-hint">příští měsíční billing date ze StreamOne ION</span>
         </label>
         <input type="date" id="u-start">
       </div>
@@ -552,8 +552,8 @@
 
       <div class="form-group">
         <label for="a-start">
-          Datum obnovy předplatného
-          <span class="label-sub"> — příští renewal date ze StreamOne ION</span>
+          <span id="a-start-label">Příští datum měsíčního účtování</span>
+          <span class="label-sub" id="a-start-hint">příští měsíční billing date ze StreamOne ION</span>
         </label>
         <input type="date" id="a-start">
       </div>
@@ -629,11 +629,23 @@
       document.getElementById('u-info').textContent = annual
         ? 'Zadejte roční cenu licence za uživatele dle ceníku. Při roční fakturaci se cena rozpočítá na zbývající dny v ročním závazku.'
         : 'Zadejte roční cenu licence za uživatele dle ceníku. Při měsíční fakturaci se roční cena podělí 12 měsíci a výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.';
+      document.getElementById('u-start-label').textContent = annual
+        ? 'Datum obnovy předplatného'
+        : 'Příští datum měsíčního účtování';
+      document.getElementById('u-start-hint').textContent = annual
+        ? 'příští roční renewal date ze StreamOne ION'
+        : 'příští měsíční billing date ze StreamOne ION';
     } else {
       document.getElementById('a-hint').textContent = hintText;
       document.getElementById('a-info').textContent = annual
         ? 'Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v ročním závazku.'
         : 'Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v aktuálním měsíčním fakturačním cyklu.';
+      document.getElementById('a-start-label').textContent = annual
+        ? 'Datum obnovy předplatného'
+        : 'Příští datum měsíčního účtování';
+      document.getElementById('a-start-hint').textContent = annual
+        ? 'příští roční renewal date ze StreamOne ION'
+        : 'příští měsíční billing date ze StreamOne ION';
     }
   }
 
