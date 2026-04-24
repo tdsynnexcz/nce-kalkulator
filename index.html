@@ -625,19 +625,19 @@
   const INFO = {
     u: {
       'annual':         'Zadejte roční cenu licence dle ceníku. Cena se rozpočítá na zbývající dny v aktuálním ročním fakturačním cyklu.',
-      'monthly-annual': 'Zadejte roční cenu licence v ročním závazku dle ceníku. Při měsíční fakturaci roční závazku se cena podělí 12 měsíci a výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
+      'monthly-annual': 'Zadejte roční cenu licence dle ceníku (P1Y:M). Systém ji automaticky vydělí 12 a výsledek rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
       'monthly':        'Zadejte měsíční cenu měsíčního závazku dle ceníku. Výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
     },
     a: {
       'annual':         'Zadejte roční cenu licence dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v ročním závazku.',
-      'monthly-annual': 'Zadejte roční cenu licence v ročním závazku dle ceníku. Při měsíční fakturaci roční závazku se cena podělí 12 měsíci a doplatek se vypočítá za zbývající dny v aktuálním měsíčním cyklu.',
+      'monthly-annual': 'Zadejte roční cenu licence dle ceníku (P1Y:M). Systém ji automaticky vydělí 12 a doplatek rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
       'monthly':        'Zadejte měsíční cenu měsíčního závazku dle ceníku. Doplatek za nové uživatele se vypočítá za zbývající dny v aktuálním měsíčním cyklu.',
     },
   };
 
   const PRICE_HINT = {
     'annual':         'EUR / uživatel / rok — dle ceníku',
-    'monthly-annual': 'EUR / uživatel / rok — dle ceníku',
+    'monthly-annual': 'EUR / uživatel / rok — dle ceníku (P1Y:M)',
     'monthly':        'EUR / uživatel / měsíc — dle ceníku',
   };
 
@@ -717,13 +717,12 @@
   }
 
   // Daily rate per user:
-  // 'annual'         → roční cena / dny v ročním cyklu
-  // 'monthly-annual' → (roční cena / 12) / dny v měsíčním cyklu
-  // 'monthly'        → měsíční cena / dny v měsíčním cyklu (cena je už měsíční)
+  // 'annual'         → roční cena (P1Y:Y) / dny v ročním cyklu
+  // 'monthly-annual' → roční cena (P1Y:M) / 12 / dny v měsíčním cyklu
+  // 'monthly'        → měsíční cena (P1M:M) / dny v měsíčním cyklu
   function dailyRate(price, totalDays, type) {
-    if (type === 'annual')         return price / totalDays;
     if (type === 'monthly-annual') return (price / 12) / totalDays;
-    return price / totalDays; // 'monthly' — price is already monthly
+    return price / totalDays;
   }
 
   // ── Formatting ──────────────────────────────────────────
@@ -850,7 +849,7 @@
     const charge = dr * remDays * addUsers;
     const cycleLabel  = type === 'annual' ? 'roční cyklus' : 'měsíční cyklus';
     const periodPrice = type === 'monthly-annual' ? price / 12 : price;
-    const periodLabel = type === 'monthly' ? 'měsíc (Y/M)' : type === 'monthly-annual' ? 'měsíc (roční cena ÷ 12)' : 'rok';
+    const periodLabel = type === 'annual' ? 'rok' : 'měsíc';
 
     document.getElementById('a-breakdown').innerHTML = [
       row('neutral', `Aktuální ${cycleLabel}`,                `${fdate(cs)} – ${fdate(ce)}`),
