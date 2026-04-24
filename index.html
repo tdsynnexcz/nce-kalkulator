@@ -463,7 +463,7 @@
       <div class="form-group">
         <label for="u-price-old">
           Cena <em>aktuální</em> licence
-          <span class="label-sub" id="u-hint-old">EUR / uživatel / rok — dle ceníku</span>
+          <span class="label-sub" id="u-hint-old">EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -475,7 +475,7 @@
       <div class="form-group">
         <label for="u-price-new">
           Cena <em>nové</em> licence
-          <span class="label-sub" id="u-hint-new">EUR / uživatel / rok — dle ceníku</span>
+          <span class="label-sub" id="u-hint-new">EUR / uživatel / rok — dle ceníku ve StreamOne ION</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -548,7 +548,7 @@
       <div class="form-group span2">
         <label for="a-price">
           Cena licence
-          <span class="label-sub" id="a-hint">EUR / uživatel / rok — dle ceníku</span>
+          <span class="label-sub" id="a-hint">EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -635,10 +635,18 @@
     },
   };
 
-  const PRICE_HINT = {
-    'annual':         'EUR / uživatel / rok — dle ceníku',
-    'monthly-annual': 'EUR / uživatel / rok — dle ceníku (P1Y:M)',
-    'monthly':        'EUR / uživatel / měsíc — dle ceníku',
+  // Hint pro aktuální licenci — cena z běžící subskripce zákazníka ve StreamOne ION
+  const PRICE_HINT_CUR = {
+    'annual':         'EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION',
+    'monthly-annual': 'EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION',
+    'monthly':        'EUR / uživatel / měsíc — dle aktivní subskripce zákazníka ve StreamOne ION',
+  };
+
+  // Hint pro novou licenci — cena z aktuálního ceníku ve StreamOne ION
+  const PRICE_HINT_NEW = {
+    'annual':         'EUR / uživatel / rok — dle ceníku ve StreamOne ION',
+    'monthly-annual': 'EUR / uživatel / rok — dle ceníku ve StreamOne ION (P1Y:M)',
+    'monthly':        'EUR / uživatel / měsíc — dle ceníku ve StreamOne ION',
   };
 
   const PLACEHOLDER = {
@@ -656,12 +664,12 @@
     document.getElementById(`${prefix}-info`).textContent = INFO[prefix][type];
 
     if (prefix === 'u') {
-      document.getElementById('u-hint-old').textContent = PRICE_HINT[type];
-      document.getElementById('u-hint-new').textContent = PRICE_HINT[type];
+      document.getElementById('u-hint-old').textContent = PRICE_HINT_CUR[type];
+      document.getElementById('u-hint-new').textContent = PRICE_HINT_NEW[type];
       document.getElementById('u-price-old').placeholder = PLACEHOLDER[type];
       document.getElementById('u-price-new').placeholder = PLACEHOLDER[type];
     } else {
-      document.getElementById('a-hint').textContent = PRICE_HINT[type];
+      document.getElementById('a-hint').textContent = PRICE_HINT_CUR[type];
       document.getElementById('a-price').placeholder = PLACEHOLDER[type];
     }
   }
