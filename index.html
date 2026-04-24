@@ -438,29 +438,32 @@
   <!-- ── TAB: UPGRADE ──────────────────────────────────── -->
   <div id="tab-upgrade" class="card" role="tabpanel">
 
-    <div class="section-label">Typ fakturace</div>
+    <div class="section-label">Typ závazku</div>
     <div class="billing-toggle">
-      <button class="billing-btn active" onclick="setBilling('u', 'monthly', this)">
-        Měsíční fakturace
-        <small>závazek hrazen měsíčně</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('u', 'annual', this)">
+      <button class="billing-btn active" onclick="setBilling('u', 'annual', this)">
         Roční fakturace
-        <small>závazek hrazen ročně dopředu</small>
+        <small>roční závazek</small>
+      </button>
+      <button class="billing-btn" onclick="setBilling('u', 'monthly-annual', this)">
+        Měsíční fakturace
+        <small>roční závazek</small>
+      </button>
+      <button class="billing-btn" onclick="setBilling('u', 'monthly', this)">
+        Měsíční závazek
+        <small>měsíční fakturace</small>
       </button>
     </div>
 
     <div class="info-box" id="u-info">
-      Zadejte roční cenu licence za uživatele dle ceníku. Při měsíční fakturaci
-      se roční cena podělí 12 měsíci a výsledek se rozpočítá na zbývající dny
-      v aktuálním měsíčním cyklu.
+      Zadejte roční cenu licence za uživatele dle ceníku. Cena se rozpočítá
+      na zbývající dny v aktuálním ročním fakturačním cyklu.
     </div>
 
     <div class="form-grid">
       <div class="form-group">
         <label for="u-price-old">
           Cena <em>aktuální</em> licence
-          <span class="label-sub" id="u-hint-old"> — EUR / uživatel / rok</span>
+          <span class="label-sub" id="u-hint-old">EUR / uživatel / rok — dle ceníku</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -472,7 +475,7 @@
       <div class="form-group">
         <label for="u-price-new">
           Cena <em>nové</em> licence
-          <span class="label-sub" id="u-hint-new"> — EUR / uživatel / rok</span>
+          <span class="label-sub" id="u-hint-new">EUR / uživatel / rok — dle ceníku</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -519,21 +522,25 @@
   <!-- ── TAB: ADD SEATS ────────────────────────────────── -->
   <div id="tab-addseats" class="card" role="tabpanel" style="display:none">
 
-    <div class="section-label">Typ fakturace</div>
+    <div class="section-label">Typ závazku</div>
     <div class="billing-toggle">
-      <button class="billing-btn active" onclick="setBilling('a', 'monthly', this)">
-        Měsíční fakturace
-        <small>závazek hrazen měsíčně</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('a', 'annual', this)">
+      <button class="billing-btn active" onclick="setBilling('a', 'annual', this)">
         Roční fakturace
-        <small>závazek hrazen ročně dopředu</small>
+        <small>roční závazek</small>
+      </button>
+      <button class="billing-btn" onclick="setBilling('a', 'monthly-annual', this)">
+        Měsíční fakturace
+        <small>roční závazek</small>
+      </button>
+      <button class="billing-btn" onclick="setBilling('a', 'monthly', this)">
+        Měsíční závazek
+        <small>měsíční fakturace</small>
       </button>
     </div>
 
     <div class="info-box" id="a-info">
       Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové
-      uživatele se vypočítá pro-rata za zbývající dny v aktuálním měsíčním
+      uživatele se vypočítá pro-rata za zbývající dny v aktuálním ročním
       fakturačním cyklu.
     </div>
 
@@ -541,7 +548,7 @@
       <div class="form-group span2">
         <label for="a-price">
           Cena licence
-          <span class="label-sub" id="a-hint"> — EUR / uživatel / rok</span>
+          <span class="label-sub" id="a-hint">EUR / uživatel / rok — dle ceníku</span>
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
@@ -601,7 +608,10 @@
 <!-- ── SCRIPT ───────────────────────────────────────────── -->
 <script>
   // ── State ──────────────────────────────────────────────
-  const billing = { u: 'monthly', a: 'monthly' };
+  // 'annual'         = roční fakturace, roční závazek
+  // 'monthly-annual' = měsíční fakturace, roční závazek
+  // 'monthly'        = měsíční závazek, měsíční fakturace
+  const billing = { u: 'annual', a: 'annual' };
 
   // ── Tab switching ───────────────────────────────────────
   function switchTab(name, btn) {
@@ -612,28 +622,47 @@
   }
 
   // ── Billing toggle ──────────────────────────────────────
+  const INFO = {
+    u: {
+      'annual':         'Zadejte roční cenu licence dle ceníku. Cena se rozpočítá na zbývající dny v aktuálním ročním fakturačním cyklu.',
+      'monthly-annual': 'Zadejte roční cenu licence dle ceníku. Při měsíční fakturaci roční závazku se cena podělí 12 měsíci a výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
+      'monthly':        'Zadejte měsíční cenu licence dle faktury (Y/M cena ze StreamOne ION). Výsledek se rozpočítá na zbývající dny v aktuálním měsíčním závazku.',
+    },
+    a: {
+      'annual':         'Zadejte roční cenu licence dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v ročním závazku.',
+      'monthly-annual': 'Zadejte roční cenu licence dle ceníku. Při měsíční fakturaci roční závazku se cena podělí 12 měsíci a doplatek se vypočítá za zbývající dny v aktuálním měsíčním cyklu.',
+      'monthly':        'Zadejte měsíční cenu licence dle faktury (Y/M cena ze StreamOne ION). Doplatek za nové uživatele se vypočítá za zbývající dny v aktuálním měsíčním závazku.',
+    },
+  };
+
+  const PRICE_HINT = {
+    'annual':         'EUR / uživatel / rok — dle ceníku',
+    'monthly-annual': 'EUR / uživatel / rok — dle ceníku',
+    'monthly':        'EUR / uživatel / měsíc — dle faktury (Y/M)',
+  };
+
+  const PLACEHOLDER = {
+    'annual':         'např. 120.96',
+    'monthly-annual': 'např. 120.96',
+    'monthly':        'např. 10.08',
+  };
+
   function setBilling(prefix, type, btn) {
     billing[prefix] = type;
     btn.closest('.billing-toggle').querySelectorAll('.billing-btn')
        .forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    const annual = type === 'annual';
-    const hintText = annual
-      ? ' — EUR / uživatel / rok (roční faktura předem)'
-      : ' — EUR / uživatel / rok (měsíční splátky)';
+    document.getElementById(`${prefix}-info`).textContent = INFO[prefix][type];
 
     if (prefix === 'u') {
-      document.getElementById('u-hint-old').textContent = hintText;
-      document.getElementById('u-hint-new').textContent = hintText;
-      document.getElementById('u-info').textContent = annual
-        ? 'Zadejte roční cenu licence za uživatele dle ceníku. Při roční fakturaci se cena rozpočítá na zbývající dny v ročním závazku.'
-        : 'Zadejte roční cenu licence za uživatele dle ceníku. Při měsíční fakturaci se roční cena podělí 12 měsíci a výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.';
+      document.getElementById('u-hint-old').textContent = PRICE_HINT[type];
+      document.getElementById('u-hint-new').textContent = PRICE_HINT[type];
+      document.getElementById('u-price-old').placeholder = PLACEHOLDER[type];
+      document.getElementById('u-price-new').placeholder = PLACEHOLDER[type];
     } else {
-      document.getElementById('a-hint').textContent = hintText;
-      document.getElementById('a-info').textContent = annual
-        ? 'Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v ročním závazku.'
-        : 'Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v aktuálním měsíčním fakturačním cyklu.';
+      document.getElementById('a-hint').textContent = PRICE_HINT[type];
+      document.getElementById('a-price').placeholder = PLACEHOLDER[type];
     }
   }
 
@@ -668,7 +697,9 @@
       return { cs, ce };
     }
 
-    // Monthly: derive billing day from renewal date
+    // 'monthly-annual': billing day derived from annual renewal date (e.g. 27 from 27.02.2027)
+    // 'monthly':        billing day derived from next monthly renewal date
+    // Both use the same logic — billing day = day-of-month of the entered renewal date
     const billingDay = renewalDate.getDate();
 
     // Most recent billing date on or before changeDate
@@ -685,11 +716,14 @@
     return { cs, ce };
   }
 
-  // Daily rate: annualPrice / 12 / daysInCycle (monthly) or annualPrice / daysInCycle (annual)
-  function dailyRate(annualPrice, totalDays, type) {
-    return type === 'monthly'
-      ? (annualPrice / 12) / totalDays
-      : annualPrice / totalDays;
+  // Daily rate per user:
+  // 'annual'         → roční cena / dny v ročním cyklu
+  // 'monthly-annual' → (roční cena / 12) / dny v měsíčním cyklu
+  // 'monthly'        → měsíční cena / dny v měsíčním cyklu (cena je už měsíční)
+  function dailyRate(price, totalDays, type) {
+    if (type === 'annual')         return price / totalDays;
+    if (type === 'monthly-annual') return (price / 12) / totalDays;
+    return price / totalDays; // 'monthly' — price is already monthly
   }
 
   // ── Formatting ──────────────────────────────────────────
@@ -766,7 +800,7 @@
     const charge = drNew * remDays * users;
     const net    = charge - credit;
 
-    const periodLabel = type === 'monthly' ? 'měsíční cyklus' : 'roční cyklus';
+    const periodLabel = type === 'annual' ? 'roční cyklus' : 'měsíční cyklus';
 
     document.getElementById('u-breakdown').innerHTML = [
       row('neutral', `Aktuální ${periodLabel}`,         `${fdate(cs)} – ${fdate(ce)}`),
@@ -814,9 +848,9 @@
 
     const dr     = dailyRate(price, totalDays, type);
     const charge = dr * remDays * addUsers;
-    const periodPrice = type === 'monthly' ? price / 12 : price;
-    const periodLabel = type === 'monthly' ? 'měsíc' : 'rok';
-    const cycleLabel  = type === 'monthly' ? 'měsíční cyklus' : 'roční cyklus';
+    const cycleLabel  = type === 'annual' ? 'roční cyklus' : 'měsíční cyklus';
+    const periodPrice = type === 'monthly-annual' ? price / 12 : price;
+    const periodLabel = type === 'monthly' ? 'měsíc (Y/M)' : type === 'monthly-annual' ? 'měsíc (roční cena ÷ 12)' : 'rok';
 
     document.getElementById('a-breakdown').innerHTML = [
       row('neutral', `Aktuální ${cycleLabel}`,                `${fdate(cs)} – ${fdate(ce)}`),
