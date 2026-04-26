@@ -570,12 +570,7 @@
         <input type="date" id="a-change">
       </div>
 
-      <div class="form-group">
-        <label for="a-users-cur">Stávající počet uživatelů</label>
-        <input type="number" id="a-users-cur" placeholder="např. 50" min="1" step="1">
-      </div>
-
-      <div class="form-group">
+      <div class="form-group span2">
         <label for="a-users-add">Počet přidávaných uživatelů</label>
         <input type="number" id="a-users-add" placeholder="např. 10" min="1" step="1">
       </div>
@@ -833,13 +828,11 @@
     const price      = parseFloat(document.getElementById('a-price').value);
     const renewalVal = document.getElementById('a-start').value;
     const changeVal  = document.getElementById('a-change').value;
-    const curUsers   = parseInt(document.getElementById('a-users-cur').value);
     const addUsers   = parseInt(document.getElementById('a-users-add').value);
 
     if (!renewalVal) return showErr('a', 'Zadejte datum obnovy předplatného (renewal date).');
     if (!changeVal)  return showErr('a', 'Zadejte datum navýšení licencí.');
     if (isNaN(price) || price <= 0)      return showErr('a', 'Zadejte platnou cenu licence (kladné číslo).');
-    if (isNaN(curUsers) || curUsers < 1) return showErr('a', 'Zadejte platný stávající počet uživatelů (min. 1).');
     if (isNaN(addUsers) || addUsers < 1) return showErr('a', 'Zadejte platný počet přidávaných uživatelů (min. 1).');
 
     const renewalDate = parseDate(renewalVal);
@@ -865,7 +858,6 @@
       row('neutral', 'Zbývající dní od data navýšení',        days(remDays)),
       row('neutral', `Cena licence za ${periodLabel} / už.`, eur(periodPrice)),
       row('neutral', 'Denní sazba',                           `${eur(dr)} / uživatel`),
-      row('neutral', 'Stávající počet uživatelů',             `${curUsers} uživatelů`),
       row('charge',  `Pro-rata doplatek za nové uživatele (${addUsers} už. × ${days(remDays)})`, `+ ${eur(charge)}`),
     ].join('');
 
