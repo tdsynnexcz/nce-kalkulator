@@ -392,6 +392,17 @@
       margin-top: 2.5rem;
     }
 
+    /* ── COTERM INTRO ────────────────────────────────── */
+    .coterm-intro {
+      font-size: .88rem;
+      color: var(--gray-700);
+      line-height: 1.6;
+      padding: .85rem 1rem;
+      background: var(--gray-100);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+
     /* ── RESPONSIVE ──────────────────────────────────── */
     @media (max-width: 580px) {
       main { margin: 1.5rem auto; }
@@ -434,7 +445,7 @@
       <span class="tab-icon">➕</span> Navýšení licencí
     </button>
     <button class="tab-btn" role="tab" onclick="switchTab('coterm', this)">
-      <span class="tab-icon">📅</span> Nová subskripce
+      <span class="tab-icon">📅</span> Koterminace
     </button>
   </nav>
 
@@ -615,13 +626,19 @@
       </button>
     </div>
 
+    <div class="coterm-intro">
+      Koterminace umožňuje zarovnat novou subskripci termínově s existující.
+      Nová subskripce tak neskončí za 12 měsíců od nákupu, ale ke stejnému datu
+      jako stávající závazek zákazníka — partner zaplatí pouze pro-rata část za kratší období.
+    </div>
+
     <div class="info-box" id="c-info">
       Zadejte roční cenu nové licence dle ceníku. Pro-rata doplatek se vypočítá
       za dny od data nákupu do konce existující subskripce, ke které se zarovnáváte.
     </div>
 
     <div class="form-grid">
-      <div class="form-group span2">
+      <div class="form-group">
         <label for="c-price">
           Cena nové licence
           <span class="label-sub" id="c-hint">EUR / uživatel / rok — dle ceníku ve StreamOne ION</span>
@@ -634,6 +651,11 @@
       </div>
 
       <div class="form-group">
+        <label for="c-users">Počet uživatelů nové subskripce</label>
+        <input type="number" id="c-users" placeholder="např. 50" min="1" step="1">
+      </div>
+
+      <div class="form-group">
         <label for="c-purchase">Datum nákupu nové subskripce</label>
         <input type="date" id="c-purchase">
       </div>
@@ -641,14 +663,9 @@
       <div class="form-group">
         <label for="c-align">
           Konec existující subskripce
-          <span class="label-sub">datum, ke kterému zarovnáváte</span>
+          <span class="label-sub">datum zarovnání ze StreamOne ION</span>
         </label>
         <input type="date" id="c-align">
-      </div>
-
-      <div class="form-group span2">
-        <label for="c-users">Počet uživatelů nové subskripce</label>
-        <input type="number" id="c-users" placeholder="např. 50" min="1" step="1">
       </div>
     </div>
 
