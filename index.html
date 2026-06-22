@@ -652,7 +652,10 @@
 
   // ── Dynamic hint / info text ────────────────────────────
   function termWord(t) { return t === 1 ? 'měsíční' : t === 36 ? 'tříletý (36měsíční)' : 'roční (12měsíční)'; }
-  function priceUnit(t) { return t === 1 ? 'EUR / uživatel / měsíc' : 'EUR / uživatel / rok'; }
+  function priceUnit(t) { return t === 1 ? 'EUR / uživatel / měsíc' : t === 36 ? 'EUR / uživatel / 3 roky (celý term)' : 'EUR / uživatel / rok'; }
+  function priceTermWord(t) { return t === 1 ? 'měsíc' : t === 36 ? '3 roky' : 'rok'; }
+  // Počet dní celého termu pro výpočet denní sazby (cena je za celý term)
+  function termDays(t) { return 365 * (t / 12); }
 
   function infoFor(p, t, billing) {
     const billNote = (t !== 1 && billing === 'monthly')
@@ -664,10 +667,11 @@
       return 'Roční (12měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.';
     }
     const what = p === 'u' ? 'upgrade' : 'navýšení';
+    const priceNote = t === 36 ? ' Pozor: u tříletého termu zadej cenu za celé 3 roky (jak je v ceníku).' : '';
     const base = t === 1
       ? `Měsíční závazek: doplatek za ${what} se rozpočítá na zbývající dny aktuálního měsíčního cyklu.`
       : `Celková hodnota ${what} se počítá pro-rata do konce ${termWord(t)} závazku. Volba fakturace určuje, co padne na nejbližší fakturu a jak se zbytek rozloží v čase.`;
-    return base + billNote;
+    return base + priceNote + billNote;
   }
 
   function updateHints(p) {
@@ -716,9 +720,9 @@
   }
 
   // Rozpad závazku dle fakturace.
-  // drPerDay = denní sazba na uživatele (čistá; u upgradu může být záporná = kredit)
-  // Vrací: { now, count, perPeriod, nextEnd, interval }
-  function splitBilling(drPerDay, users, changeDate, endDate, billing, periodPrice) {
+  // drPerDay = denní sazba na uživatele (cena celého termu / dní termu; u upgradu může být záporná = kredit)
+  // Vrací: { now, count, perPeriod, nextEnd, interval, commitment }
+  function splitBilling(drPerDay, users, changeDate, endDate, billing) {
     const commitment = drPerDay * daysBetween(changeDate, endDate) * users;
     if (billing === 'upfront') {
       return { now: commitment, count: 0, perPeriod: 0, interval: 0, commitment };
@@ -729,7 +733,8 @@
     const now = drPerDay * daysBetween(changeDate, nbMinus1) * users;
     const months = (endDate.getFullYear() - nb.getFullYear()) * 12 + (endDate.getMonth() - nb.getMonth());
     const count = Math.max(0, Math.round(months / interval));
-    const perPeriod = (billing === 'monthly' ? periodPrice / 12 : periodPrice) * users;
+    const periodDays = billing === 'monthly' ? 365 / 12 : 365;   // nominální délka období
+    const perPeriod = drPerDay * periodDays * users;
     return { now, count, perPeriod, nextEnd: nbMinus1, interval, commitment };
   }
 
@@ -816,14 +821,14 @@
     }
 
     // ── 12/36měsíční závazek: pro-rata do konce + rozpad dle fakturace ──
-    const drOld = priceOld / 365, drNew = priceNew / 365;
+    const td = termDays(t);                    // 365 (roční) / 1095 (tříletý)
+    const drOld = priceOld / td, drNew = priceNew / td;
     const netDaily = drNew - drOld;            // čistá denní sazba na uživatele
     const remDays = daysBetween(changeDate, endDate);
     const netCommit = netDaily * remDays * users;
     const isCredit = netCommit < 0;
     const sign = isCredit ? '−' : '+';
-    const netPeriodPrice = priceNew - priceOld;  // čistá změna roční ceny
-    const sp = splitBilling(netDaily, users, changeDate, endDate, billing, netPeriodPrice);
+    const sp = splitBilling(netDaily, users, changeDate, endDate, billing);
 
     let billRows;
     if (billing === 'upfront') {
@@ -839,7 +844,7 @@
     document.getElementById('u-breakdown').innerHTML =
         row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate))
       + row('neutral', 'Zbývajících dní do konce', days(remDays))
-      + row('neutral', 'Čistá denní sazba na uživatele', `${sign} ${eur(Math.abs(netDaily))}`)
+      + row('neutral', `Čistá denní sazba na uživatele (cena / ${td} dní)`, `${sign} ${eur(Math.abs(netDaily))}`)
       + billRows;
 
     document.getElementById('u-total').innerHTML =
@@ -887,10 +892,11 @@
     }
 
     // ── 12/36měsíční závazek: pro-rata do konce + rozpad dle fakturace ──
-    const dr = price / 365;
+    const td = termDays(t);                    // 365 (roční) / 1095 (tříletý)
+    const dr = price / td;
     const remDays = daysBetween(changeDate, endDate);
     const commitment = dr * remDays * addUsers;
-    const sp = splitBilling(dr, addUsers, changeDate, endDate, billing, price);
+    const sp = splitBilling(dr, addUsers, changeDate, endDate, billing);
 
     let billRows;
     if (billing === 'upfront') {
@@ -906,8 +912,8 @@
     document.getElementById('a-breakdown').innerHTML =
         row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate))
       + row('neutral', 'Zbývajících dní do konce', days(remDays))
-      + row('neutral', 'Cena licence', `${eur(price)} / rok / už.`)
-      + row('neutral', 'Denní sazba (roční cena / 365)', `${eur(dr)} / uživatel`)
+      + row('neutral', 'Cena licence', `${eur(price)} / ${priceTermWord(t)} / už.`)
+      + row('neutral', `Denní sazba (cena / ${td} dní termu)`, `${eur(dr)} / uživatel`)
       + billRows;
 
     document.getElementById('a-total').innerHTML =
@@ -945,7 +951,7 @@
 
     const fullDays    = daysBetween(purchaseDate, fullEnd);
     const serviceDays = daysBetween(purchaseDate, alignDate);
-    const dr          = t === 1 ? price / fullDays : price / 365;  // měsíční cena přes měsíc, jinak roční/365
+    const dr          = price / fullDays;   // cena celého termu rozpočítaná na dny termu
     const charge      = dr * serviceDays * users;
     const fullValue   = dr * fullDays * users;
     const saving      = fullValue - charge;
@@ -954,7 +960,7 @@
       row('neutral', `Plný ${termWord(t)} závazek od nákupu`, `${fdate(purchaseDate)} – ${fdate(fullEnd)} (${days(fullDays)})`)
       + row('neutral', 'Zarovnáno na konec', fdate(alignDate))
       + row('neutral', 'Dní skutečné služby', days(serviceDays))
-      + row('neutral', 'Cena licence', `${eur(price)} / ${t === 1 ? 'měsíc' : 'rok'} / už.`)
+      + row('neutral', 'Cena licence', `${eur(price)} / ${priceTermWord(t)} / už.`)
       + row('neutral', 'Denní sazba', `${eur(dr)} / uživatel`)
       + row('neutral', 'Počet uživatelů', `${users}`)
       + row('charge',  `Pro-rata doplatek (${users} už. × ${days(serviceDays)})`, `+ ${eur(charge)}`)
