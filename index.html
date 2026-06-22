@@ -408,10 +408,7 @@
     </div>
 
     <div class="section-label" id="u-bill-label">Fakturace</div>
-    <div class="billing-toggle" id="u-bill-row">
-      <button class="billing-btn active" onclick="setBill('u',false,this)">Předplaceno / ročně</button>
-      <button class="billing-btn" onclick="setBill('u',true,this)">Měsíčně<small>+5 % u 12/36m</small></button>
-    </div>
+    <div class="billing-toggle" id="u-bill-row"></div>
 
     <div class="info-box" id="u-info"></div>
 
@@ -481,10 +478,7 @@
     </div>
 
     <div class="section-label" id="a-bill-label">Fakturace</div>
-    <div class="billing-toggle" id="a-bill-row">
-      <button class="billing-btn active" onclick="setBill('a',false,this)">Předplaceno / ročně</button>
-      <button class="billing-btn" onclick="setBill('a',true,this)">Měsíčně<small>+5 % u 12/36m</small></button>
-    </div>
+    <div class="billing-toggle" id="a-bill-row"></div>
 
     <div class="info-box" id="a-info"></div>
 
@@ -602,11 +596,11 @@
 </footer>
 
 <script>
-  // ── State: term (1/12/36 měsíců) + monthly billing flag ──
+  // ── State: term (1/12/36 měsíců) + billing ('annual'/'monthly'/'upfront') ──
   const state = {
-    u: { term: 12, monthly: false },
-    a: { term: 12, monthly: false },
-    c: { term: 12, monthly: false }
+    u: { term: 12, billing: 'annual' },
+    a: { term: 12, billing: 'annual' },
+    c: { term: 12 }
   };
 
   // ── Tab switching ───────────────────────────────────────
@@ -618,57 +612,68 @@
     document.getElementById('tab-coterm').style.display   = name === 'coterm'   ? 'block' : 'none';
   }
 
+  // ── Billing options dle délky termu ─────────────────────
+  const BILL_OPTS = {
+    12: [['annual', 'Ročně', 'roční fakturace'], ['monthly', 'Měsíčně', '+5 % dle ceníku']],
+    36: [['annual', 'Ročně', 'každý rok'], ['monthly', 'Měsíčně', '+5 % dle ceníku'], ['upfront', 'Celé předem', 'celé 3 roky']]
+  };
+
+  function renderBilling(p) {
+    const label = document.getElementById(`${p}-bill-label`);
+    const row   = document.getElementById(`${p}-bill-row`);
+    const t = state[p].term;
+    if (t === 1) { label.style.display = 'none'; row.style.display = 'none'; return; }
+    label.style.display = ''; row.style.display = '';
+    const opts = BILL_OPTS[t];
+    // pokud aktuální volba není dostupná, vrať na 'annual'
+    if (!opts.some(o => o[0] === state[p].billing)) state[p].billing = 'annual';
+    row.innerHTML = opts.map(([val, title, sub]) =>
+      `<button class="billing-btn${state[p].billing === val ? ' active' : ''}" onclick="setBill('${p}','${val}',this)">${title}<small>${sub}</small></button>`
+    ).join('');
+  }
+
   // ── Term & billing toggles ──────────────────────────────
   function setTerm(p, months, btn) {
     state[p].term = months;
     btn.closest('.billing-toggle').querySelectorAll('.billing-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    // Měsíční závazek (1m) je vždy měsíční fakturace → schovej řádek fakturace
-    if (p !== 'c') {
-      const billLabel = document.getElementById(`${p}-bill-label`);
-      const billRow   = document.getElementById(`${p}-bill-row`);
-      if (months === 1) {
-        state[p].monthly = true;
-        billLabel.style.display = 'none';
-        billRow.style.display = 'none';
-      } else {
-        billLabel.style.display = '';
-        billRow.style.display = '';
-      }
-    }
+    if (p !== 'c') renderBilling(p);
     updateHints(p);
   }
 
-  function setBill(p, monthly, btn) {
-    state[p].monthly = monthly;
+  function setBill(p, val, btn) {
+    state[p].billing = val;
     btn.closest('.billing-toggle').querySelectorAll('.billing-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     updateHints(p);
   }
 
+  function billingWord(b) { return b === 'monthly' ? 'měsíční' : b === 'upfront' ? 'celé předem' : 'roční'; }
+
   // ── Dynamic hint / info text ────────────────────────────
   function termWord(t) { return t === 1 ? 'měsíční' : t === 36 ? 'tříletý (36měsíční)' : 'roční (12měsíční)'; }
   function priceUnit(t) { return t === 1 ? 'EUR / uživatel / měsíc' : 'EUR / uživatel / rok'; }
 
-  function infoFor(p, t, monthly) {
-    const billNote = (t !== 1 && monthly)
+  function infoFor(p, t, billing) {
+    const billNote = (t !== 1 && billing === 'monthly')
       ? ' Pro měsíční fakturaci zadej cenu z ceníku pro měsíční platbu (nese +5 % oproti předplacené variantě).'
       : '';
     if (p === 'c') {
-      if (t === 1)  return 'Měsíční závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.' + billNote;
-      if (t === 36) return 'Tříletý (36měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce, ke které zarovnáváš. Plný term je 36 měsíců.' + billNote;
-      return 'Roční (12měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.' + billNote;
+      if (t === 1)  return 'Měsíční závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.';
+      if (t === 36) return 'Tříletý (36měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce, ke které zarovnáváš. Plný term je 36 měsíců.';
+      return 'Roční (12měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.';
     }
-    const what = p === 'u' ? 'doplatek za upgrade' : 'doplatek za nové uživatele';
-    if (t === 1)  return `Měsíční závazek: ${what} se rozpočítá na zbývající dny aktuálního měsíčního cyklu.` + billNote;
-    if (t === 36) return `Tříletý (36měsíční) závazek: ${what} se rozpočítá pro-rata za zbývající dny až do konce 36měsíčního termu — u změny v 1.–2. roce může přesáhnout jednu roční cenu.` + billNote;
-    return `Roční (12měsíční) závazek: ${what} se rozpočítá pro-rata za zbývající dny do konce ročního termu.` + billNote;
+    const what = p === 'u' ? 'upgrade' : 'navýšení';
+    const base = t === 1
+      ? `Měsíční závazek: doplatek za ${what} se rozpočítá na zbývající dny aktuálního měsíčního cyklu.`
+      : `Celková hodnota ${what} se počítá pro-rata do konce ${termWord(t)} závazku. Volba fakturace určuje, co padne na nejbližší fakturu a jak se zbytek rozloží v čase.`;
+    return base + billNote;
   }
 
   function updateHints(p) {
-    const t = state[p].term, m = state[p].monthly;
-    document.getElementById(`${p}-info`).textContent = infoFor(p, t, m);
+    const t = state[p].term;
+    const billing = state[p].billing || 'annual';
+    document.getElementById(`${p}-info`).textContent = infoFor(p, t, billing);
     const unit = priceUnit(t);
     if (p === 'u') {
       document.getElementById('u-hint-old').textContent = unit + ' — dle aktivní subskripce zákazníka ve StreamOne ION';
@@ -699,6 +704,33 @@
     const ce = new Date(cs.getFullYear(), cs.getMonth() + 1, billingDay);
     ce.setDate(ce.getDate() - 1);
     return { cs, ce };
+  }
+
+  function addMonths(d, n) { const x = new Date(d); x.setMonth(x.getMonth() + n); return x; }
+
+  // Nejbližší fakturační hranice po changeDate, ukotvená ke konci závazku
+  function nextBoundary(endDate, changeDate, interval) {
+    let b = new Date(endDate);
+    while (b > changeDate) b = addMonths(b, -interval);
+    return addMonths(b, interval);
+  }
+
+  // Rozpad závazku dle fakturace.
+  // drPerDay = denní sazba na uživatele (čistá; u upgradu může být záporná = kredit)
+  // Vrací: { now, count, perPeriod, nextEnd, interval }
+  function splitBilling(drPerDay, users, changeDate, endDate, billing, periodPrice) {
+    const commitment = drPerDay * daysBetween(changeDate, endDate) * users;
+    if (billing === 'upfront') {
+      return { now: commitment, count: 0, perPeriod: 0, interval: 0, commitment };
+    }
+    const interval = billing === 'monthly' ? 1 : 12;
+    const nb = nextBoundary(endDate, changeDate, interval);
+    const nbMinus1 = new Date(nb); nbMinus1.setDate(nbMinus1.getDate() - 1);
+    const now = drPerDay * daysBetween(changeDate, nbMinus1) * users;
+    const months = (endDate.getFullYear() - nb.getFullYear()) * 12 + (endDate.getMonth() - nb.getMonth());
+    const count = Math.max(0, Math.round(months / interval));
+    const perPeriod = (billing === 'monthly' ? periodPrice / 12 : periodPrice) * users;
+    return { now, count, perPeriod, nextEnd: nbMinus1, interval, commitment };
   }
 
   // ── Formatting ──────────────────────────────────────────
@@ -735,17 +767,16 @@
   }
 
   const ORIENT_NOTE = 'Výpočet je orientační dle pravidel Microsoft NCE pro-rata fakturace. Skutečná částka na faktuře se může mírně lišit vlivem zaokrouhlení.';
-  function billingNote(t, monthly) {
-    if (t !== 1 && monthly) {
-      return ' Při měsíční fakturaci se tato celková hodnota rozloží do měsíčních faktur do konce závazku.';
-    }
+  function billingNote(billing) {
+    if (billing === 'monthly') return ' Měsíční fakturace nese dle ceníku +5 % oproti předplacené variantě — zadej cenu z ceníku pro měsíční platbu.';
+    if (billing === 'annual')  return ' Celková hodnota je závazek do konce termu; na faktury se rozkládá ročně.';
     return '';
   }
 
   // ── CALCULATOR 1: Upgrade ───────────────────────────────
   function calcUpgrade() {
     clearErr('u');
-    const t = state.u.term, monthly = state.u.monthly;
+    const t = state.u.term, billing = state.u.billing;
     const priceOld = parseFloat(document.getElementById('u-price-old').value);
     const priceNew = parseFloat(document.getElementById('u-price-new').value);
     const endVal   = document.getElementById('u-start').value;
@@ -762,49 +793,66 @@
     const changeDate = parseDate(changeVal);
     if (changeDate >= endDate) return showErr('u', 'Datum upgradu musí být před koncem závazku.');
 
-    let drOld, drNew, remDays, periodRow;
-
+    // ── 1měsíční závazek: jednorázový pro-rata v měsíčním cyklu ──
     if (t === 1) {
       const { cs, ce } = monthlyCycle(endDate, changeDate);
       const totalDays = daysBetween(cs, ce);
-      remDays = daysBetween(changeDate, ce);
+      const remDays = daysBetween(changeDate, ce);
       if (changeDate < cs) return showErr('u', 'Datum upgradu předchází začátku aktuálního měsíčního cyklu. Zkontrolujte konec závazku.');
-      drOld = priceOld / totalDays;
-      drNew = priceNew / totalDays;
-      periodRow = row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
-                + row('neutral', 'Celkem dní v cyklu', days(totalDays));
-    } else {
-      // 12 nebo 36 měsíců: pro-rata do konce závazku, denní sazba = roční cena / 365
-      drOld = priceOld / 365;
-      drNew = priceNew / 365;
-      remDays = daysBetween(changeDate, endDate);
-      periodRow = row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate));
+      const drOld = priceOld / totalDays, drNew = priceNew / totalDays;
+      const credit = drOld * remDays * users, charge = drNew * remDays * users, net = charge - credit;
+      document.getElementById('u-breakdown').innerHTML =
+          row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
+        + row('neutral', 'Celkem dní v cyklu', days(totalDays))
+        + row('neutral', 'Zbývajících dní od upgradu', days(remDays))
+        + row('credit',  `Pro-rata refund za aktuální licenci`, `− ${eur(credit)}`)
+        + row('charge',  `Pro-rata doplatek za novou licenci`, `+ ${eur(charge)}`);
+      document.getElementById('u-total').innerHTML = net >= 0
+        ? totalBlock(false, 'Celkový doplatek partnera', net)
+        : totalBlock(true, 'Kredit partnera', Math.abs(net));
+      document.getElementById('u-note').textContent = ORIENT_NOTE;
+      document.getElementById('u-results').classList.add('visible');
+      return;
     }
 
-    const credit = drOld * remDays * users;
-    const charge = drNew * remDays * users;
-    const net = charge - credit;
+    // ── 12/36měsíční závazek: pro-rata do konce + rozpad dle fakturace ──
+    const drOld = priceOld / 365, drNew = priceNew / 365;
+    const netDaily = drNew - drOld;            // čistá denní sazba na uživatele
+    const remDays = daysBetween(changeDate, endDate);
+    const netCommit = netDaily * remDays * users;
+    const isCredit = netCommit < 0;
+    const sign = isCredit ? '−' : '+';
+    const netPeriodPrice = priceNew - priceOld;  // čistá změna roční ceny
+    const sp = splitBilling(netDaily, users, changeDate, endDate, billing, netPeriodPrice);
+
+    let billRows;
+    if (billing === 'upfront') {
+      billRows = row('charge', 'Fakturováno hned (celé předem)', `${sign} ${eur(Math.abs(sp.now))}`);
+    } else if (sp.count === 0) {
+      billRows = row('charge', `Pro-rata ${isCredit ? 'kredit' : 'doplatek'} do konce závazku`, `${sign} ${eur(Math.abs(sp.now))}`);
+    } else {
+      const periodWord = billing === 'monthly' ? 'měsíčně' : 'ročně';
+      billRows = row('charge', `Nejbližší faktura – pro-rata do ${fdate(sp.nextEnd)}`, `${sign} ${eur(Math.abs(sp.now))}`)
+        + row('neutral', `Poté ${sp.count}× ${periodWord} (čistá změna)`, `${sign} ${eur(Math.abs(sp.perPeriod))} / období`);
+    }
 
     document.getElementById('u-breakdown').innerHTML =
-      periodRow
-      + row('neutral', 'Zbývajících dní od data upgradu', days(remDays))
-      + row('neutral', 'Denní sazba – aktuální licence', `${eur(drOld)} / uživatel`)
-      + row('neutral', 'Denní sazba – nová licence', `${eur(drNew)} / uživatel`)
-      + row('credit',  `Pro-rata refund za aktuální licenci (${users} už. × ${days(remDays)})`, `− ${eur(credit)}`)
-      + row('charge',  `Pro-rata doplatek za novou licenci (${users} už. × ${days(remDays)})`, `+ ${eur(charge)}`);
+        row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate))
+      + row('neutral', 'Zbývajících dní do konce', days(remDays))
+      + row('neutral', 'Čistá denní sazba na uživatele', `${sign} ${eur(Math.abs(netDaily))}`)
+      + billRows;
 
-    document.getElementById('u-total').innerHTML = net >= 0
-      ? totalBlock(false, 'Celkový doplatek partnera', net)
-      : totalBlock(true,  'Kredit partnera (nová licence levnější)', Math.abs(net));
+    document.getElementById('u-total').innerHTML =
+      totalBlock(isCredit, isCredit ? 'Celkový kredit do konce závazku' : 'Celková hodnota upgradu do konce závazku', Math.abs(netCommit));
 
-    document.getElementById('u-note').textContent = ORIENT_NOTE + billingNote(t, monthly);
+    document.getElementById('u-note').innerHTML = ORIENT_NOTE + billingNote(billing);
     document.getElementById('u-results').classList.add('visible');
   }
 
   // ── CALCULATOR 2: Add Seats ─────────────────────────────
   function calcAddSeats() {
     clearErr('a');
-    const t = state.a.term, monthly = state.a.monthly;
+    const t = state.a.term, billing = state.a.billing;
     const price    = parseFloat(document.getElementById('a-price').value);
     const endVal   = document.getElementById('a-start').value;
     const changeVal= document.getElementById('a-change').value;
@@ -819,37 +867,53 @@
     const changeDate = parseDate(changeVal);
     if (changeDate >= endDate) return showErr('a', 'Datum navýšení musí být před koncem závazku.');
 
-    let dr, remDays, periodRow, dayBase;
-
+    // ── 1měsíční závazek ──
     if (t === 1) {
       const { cs, ce } = monthlyCycle(endDate, changeDate);
       const totalDays = daysBetween(cs, ce);
-      remDays = daysBetween(changeDate, ce);
+      const remDays = daysBetween(changeDate, ce);
       if (changeDate < cs) return showErr('a', 'Datum navýšení předchází začátku aktuálního měsíčního cyklu. Zkontrolujte konec závazku.');
-      dr = price / totalDays;
-      dayBase = 'měsíční cena / dní v měsíci';
-      periodRow = row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
-                + row('neutral', 'Celkem dní v cyklu', days(totalDays));
-    } else {
-      dr = price / 365;
-      remDays = daysBetween(changeDate, endDate);
-      dayBase = 'roční cena / 365';
-      periodRow = row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate));
+      const dr = price / totalDays;
+      const charge = dr * remDays * addUsers;
+      document.getElementById('a-breakdown').innerHTML =
+          row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
+        + row('neutral', 'Celkem dní v cyklu', days(totalDays))
+        + row('neutral', 'Zbývajících dní od navýšení', days(remDays))
+        + row('charge',  `Pro-rata doplatek (${addUsers} už. × ${days(remDays)})`, `+ ${eur(charge)}`);
+      document.getElementById('a-total').innerHTML = totalBlock(false, `Doplatek za ${addUsers} nových uživatelů`, charge);
+      document.getElementById('a-note').textContent = ORIENT_NOTE;
+      document.getElementById('a-results').classList.add('visible');
+      return;
     }
 
-    const charge = dr * remDays * addUsers;
+    // ── 12/36měsíční závazek: pro-rata do konce + rozpad dle fakturace ──
+    const dr = price / 365;
+    const remDays = daysBetween(changeDate, endDate);
+    const commitment = dr * remDays * addUsers;
+    const sp = splitBilling(dr, addUsers, changeDate, endDate, billing, price);
+
+    let billRows;
+    if (billing === 'upfront') {
+      billRows = row('charge', 'Fakturováno hned (celé předem)', `+ ${eur(sp.now)}`);
+    } else if (sp.count === 0) {
+      billRows = row('charge', `Pro-rata doplatek do konce závazku`, `+ ${eur(sp.now)}`);
+    } else {
+      const periodWord = billing === 'monthly' ? 'měsíčně' : 'ročně';
+      billRows = row('charge', `Nejbližší faktura – pro-rata do ${fdate(sp.nextEnd)}`, `+ ${eur(sp.now)}`)
+        + row('neutral', `Poté ${sp.count}× ${periodWord} (${addUsers} už.)`, `+ ${eur(sp.perPeriod)} / období`);
+    }
 
     document.getElementById('a-breakdown').innerHTML =
-      periodRow
-      + row('neutral', 'Zbývajících dní od data navýšení', days(remDays))
-      + row('neutral', 'Cena licence', `${eur(price)} / ${t === 1 ? 'měsíc' : 'rok'} / už.`)
-      + row('neutral', `Denní sazba (${dayBase})`, `${eur(dr)} / uživatel`)
-      + row('charge',  `Pro-rata doplatek za nové uživatele (${addUsers} už. × ${days(remDays)})`, `+ ${eur(charge)}`);
+        row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate))
+      + row('neutral', 'Zbývajících dní do konce', days(remDays))
+      + row('neutral', 'Cena licence', `${eur(price)} / rok / už.`)
+      + row('neutral', 'Denní sazba (roční cena / 365)', `${eur(dr)} / uživatel`)
+      + billRows;
 
     document.getElementById('a-total').innerHTML =
-      totalBlock(false, `Celkový doplatek za ${addUsers} nových uživatelů`, charge);
+      totalBlock(false, `Celková hodnota za ${addUsers} už. do konce závazku`, commitment);
 
-    document.getElementById('a-note').textContent = ORIENT_NOTE + billingNote(t, monthly);
+    document.getElementById('a-note').innerHTML = ORIENT_NOTE + billingNote(billing);
     document.getElementById('a-results').classList.add('visible');
   }
 
@@ -904,6 +968,8 @@
   }
 
   // ── Init ────────────────────────────────────────────────
+  renderBilling('u');
+  renderBilling('a');
   ['u', 'a', 'c'].forEach(updateHints);
 </script>
 
