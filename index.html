@@ -46,10 +46,7 @@
       flex-shrink: 0;
     }
 
-    .header-logo {
-      height: 28px;
-      display: block;
-    }
+    .header-logo { height: 28px; display: block; }
 
     .header-divider {
       width: 1px;
@@ -116,10 +113,7 @@
       gap: .45rem;
     }
 
-    .tab-btn:hover:not(.active) {
-      background: var(--teal-light);
-      color: var(--teal-dark);
-    }
+    .tab-btn:hover:not(.active) { background: var(--teal-light); color: var(--teal-dark); }
 
     .tab-btn.active {
       background: var(--teal-dark);
@@ -137,7 +131,7 @@
       padding: 2rem;
     }
 
-    /* ── BILLING TOGGLE ──────────────────────────────── */
+    /* ── TOGGLES ─────────────────────────────────────── */
     .section-label {
       font-size: .78rem;
       font-weight: 700;
@@ -153,7 +147,7 @@
       border-radius: 8px;
       padding: .25rem;
       gap: .25rem;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.25rem;
     }
 
     .billing-btn {
@@ -171,9 +165,7 @@
       text-align: center;
     }
 
-    .billing-btn:hover:not(.active) {
-      color: var(--teal-dark);
-    }
+    .billing-btn:hover:not(.active) { color: var(--teal-dark); }
 
     .billing-btn.active {
       background: var(--white);
@@ -198,7 +190,7 @@
       padding: .75rem 1rem;
       font-size: .845rem;
       color: var(--teal-dark);
-      margin-bottom: 1.75rem;
+      margin: .5rem 0 1.75rem;
       line-height: 1.55;
     }
 
@@ -211,19 +203,10 @@
       align-items: end;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: .35rem;
-    }
-
+    .form-group { display: flex; flex-direction: column; gap: .35rem; }
     .form-group.span2 { grid-column: 1 / -1; }
 
-    label {
-      font-size: .845rem;
-      font-weight: 600;
-      color: var(--gray-700);
-    }
+    label { font-size: .845rem; font-weight: 600; color: var(--gray-700); }
 
     .label-sub {
       display: block;
@@ -233,9 +216,7 @@
       margin-top: .1rem;
     }
 
-    .input-wrap {
-      position: relative;
-    }
+    .input-wrap { position: relative; }
 
     .input-prefix {
       position: absolute;
@@ -248,8 +229,7 @@
       user-select: none;
     }
 
-    input[type="number"],
-    input[type="date"] {
+    input[type="number"], input[type="date"] {
       width: 100%;
       padding: .65rem .9rem;
       border: 1.5px solid var(--gray-200);
@@ -287,12 +267,7 @@
       letter-spacing: .01em;
     }
 
-    .calc-btn:hover {
-      background: var(--teal-dark);
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
-
+    .calc-btn:hover { background: var(--teal-dark); box-shadow: var(--shadow-lg); transform: translateY(-1px); }
     .calc-btn:active { transform: translateY(0); }
 
     /* ── ERROR ───────────────────────────────────────── */
@@ -308,17 +283,10 @@
     .error-msg.visible { display: block; }
 
     /* ── RESULTS ─────────────────────────────────────── */
-    .results {
-      display: none;
-      margin-top: 1.75rem;
-    }
+    .results { display: none; margin-top: 1.75rem; }
     .results.visible { display: block; }
 
-    .results-divider {
-      height: 1px;
-      background: var(--gray-200);
-      margin-bottom: 1.75rem;
-    }
+    .results-divider { height: 1px; background: var(--gray-200); margin-bottom: 1.75rem; }
 
     .results-heading {
       font-size: .98rem;
@@ -327,12 +295,7 @@
       margin-bottom: 1rem;
     }
 
-    .breakdown {
-      display: flex;
-      flex-direction: column;
-      gap: .5rem;
-      margin-bottom: 1.1rem;
-    }
+    .breakdown { display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.1rem; }
 
     .breakdown-row {
       display: flex;
@@ -361,15 +324,8 @@
       font-weight: 700;
     }
 
-    .result-total.pay {
-      background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal-mid) 100%);
-      color: var(--white);
-    }
-
-    .result-total.credit-back {
-      background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%);
-      color: var(--white);
-    }
+    .result-total.pay { background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal-mid) 100%); color: var(--white); }
+    .result-total.credit-back { background: linear-gradient(135deg, #1565C0 0%, #1976D2 100%); color: var(--white); }
 
     .total-label { font-size: .95rem; }
     .total-value { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
@@ -392,7 +348,6 @@
       margin-top: 2.5rem;
     }
 
-    /* ── COTERM INTRO ────────────────────────────────── */
     .coterm-intro {
       font-size: .88rem;
       color: var(--gray-700);
@@ -403,7 +358,6 @@
       margin-bottom: 1.5rem;
     }
 
-    /* ── RESPONSIVE ──────────────────────────────────── */
     @media (max-width: 580px) {
       main { margin: 1.5rem auto; }
       .card { padding: 1.4rem; }
@@ -416,24 +370,18 @@
 </head>
 <body>
 
-<!-- ── HEADER ──────────────────────────────────────────── -->
 <header>
-  <img
-    class="header-logo"
-    src="logo.png"
-    alt="TD SYNNEX"
-    onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'TD SYNNEX',style:'color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.04em'}))"
-  >
+  <img class="header-logo" src="logo.png" alt="TD SYNNEX"
+    onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'TD SYNNEX',style:'color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.04em'}))">
   <div class="header-divider"></div>
   <span class="header-title">Microsoft NCE Kalkulátor</span>
 </header>
 
-<!-- ── MAIN ────────────────────────────────────────────── -->
 <main>
   <h1 class="page-title">NCE Licence Kalkulátor</h1>
   <p class="page-subtitle">
     Nástroj pro orientační výpočet doplatku při změnách Microsoft NCE licencí v průběhu závazku.
-    Ceny jsou bez DPH, v EUR.
+    Podporuje měsíční, roční i tříletý (36měsíční) závazek. Ceny jsou bez DPH, v EUR.
   </p>
 
   <!-- Tabs -->
@@ -452,26 +400,20 @@
   <!-- ── TAB: UPGRADE ──────────────────────────────────── -->
   <div id="tab-upgrade" class="card" role="tabpanel">
 
-    <div class="section-label">Typ závazku</div>
+    <div class="section-label">Délka závazku</div>
     <div class="billing-toggle">
-      <button class="billing-btn active" onclick="setBilling('u', 'annual', this)">
-        Roční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('u', 'monthly-annual', this)">
-        Měsíční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('u', 'monthly', this)">
-        Měsíční závazek
-        <small>měsíční fakturace</small>
-      </button>
+      <button class="billing-btn" onclick="setTerm('u',1,this)">Měsíční<small>1 měsíc</small></button>
+      <button class="billing-btn active" onclick="setTerm('u',12,this)">Roční<small>12 měsíců</small></button>
+      <button class="billing-btn" onclick="setTerm('u',36,this)">Tříletý<small>36 měsíců</small></button>
     </div>
 
-    <div class="info-box" id="u-info">
-      Zadejte roční cenu licence za uživatele dle ceníku. Cena se rozpočítá
-      na zbývající dny v aktuálním ročním fakturačním cyklu.
+    <div class="section-label" id="u-bill-label">Fakturace</div>
+    <div class="billing-toggle" id="u-bill-row">
+      <button class="billing-btn active" onclick="setBill('u',false,this)">Předplaceno / ročně</button>
+      <button class="billing-btn" onclick="setBill('u',true,this)">Měsíčně<small>+5 % u 12/36m</small></button>
     </div>
+
+    <div class="info-box" id="u-info"></div>
 
     <div class="form-grid">
       <div class="form-group">
@@ -481,8 +423,7 @@
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
-          <input type="number" id="u-price-old" class="has-prefix"
-                 placeholder="např. 120.96" min="0.01" step="0.01">
+          <input type="number" id="u-price-old" class="has-prefix" placeholder="např. 120.96" min="0.01" step="0.01">
         </div>
       </div>
 
@@ -493,15 +434,14 @@
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
-          <input type="number" id="u-price-new" class="has-prefix"
-                 placeholder="např. 216.00" min="0.01" step="0.01">
+          <input type="number" id="u-price-new" class="has-prefix" placeholder="např. 216.00" min="0.01" step="0.01">
         </div>
       </div>
 
       <div class="form-group">
         <label for="u-start">
-          Datum obnovy předplatného
-          <span class="label-sub">příští renewal date ze StreamOne ION</span>
+          Datum konce závazku
+          <span class="label-sub" id="u-end-hint">konec aktuálního termu ze StreamOne ION</span>
         </label>
         <input type="date" id="u-start">
       </div>
@@ -526,37 +466,27 @@
       <div class="results-heading">Výsledek výpočtu</div>
       <div class="breakdown" id="u-breakdown"></div>
       <div id="u-total"></div>
-      <p class="result-note">
-        Výpočet je orientační dle pravidel Microsoft NCE pro-rata fakturace.
-        Skutečná částka na faktuře se může mírně lišit vlivem zaokrouhlení.
-      </p>
+      <p class="result-note" id="u-note"></p>
     </div>
   </div>
 
   <!-- ── TAB: ADD SEATS ────────────────────────────────── -->
   <div id="tab-addseats" class="card" role="tabpanel" style="display:none">
 
-    <div class="section-label">Typ závazku</div>
+    <div class="section-label">Délka závazku</div>
     <div class="billing-toggle">
-      <button class="billing-btn active" onclick="setBilling('a', 'annual', this)">
-        Roční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('a', 'monthly-annual', this)">
-        Měsíční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('a', 'monthly', this)">
-        Měsíční závazek
-        <small>měsíční fakturace</small>
-      </button>
+      <button class="billing-btn" onclick="setTerm('a',1,this)">Měsíční<small>1 měsíc</small></button>
+      <button class="billing-btn active" onclick="setTerm('a',12,this)">Roční<small>12 měsíců</small></button>
+      <button class="billing-btn" onclick="setTerm('a',36,this)">Tříletý<small>36 měsíců</small></button>
     </div>
 
-    <div class="info-box" id="a-info">
-      Zadejte roční cenu licence za uživatele dle ceníku. Doplatek za nové
-      uživatele se vypočítá pro-rata za zbývající dny v aktuálním ročním
-      fakturačním cyklu.
+    <div class="section-label" id="a-bill-label">Fakturace</div>
+    <div class="billing-toggle" id="a-bill-row">
+      <button class="billing-btn active" onclick="setBill('a',false,this)">Předplaceno / ročně</button>
+      <button class="billing-btn" onclick="setBill('a',true,this)">Měsíčně<small>+5 % u 12/36m</small></button>
     </div>
+
+    <div class="info-box" id="a-info"></div>
 
     <div class="form-grid">
       <div class="form-group span2">
@@ -566,15 +496,14 @@
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
-          <input type="number" id="a-price" class="has-prefix"
-                 placeholder="např. 120.96" min="0.01" step="0.01">
+          <input type="number" id="a-price" class="has-prefix" placeholder="např. 120.96" min="0.01" step="0.01">
         </div>
       </div>
 
       <div class="form-group">
         <label for="a-start">
-          Datum obnovy předplatného
-          <span class="label-sub">příští renewal date ze StreamOne ION</span>
+          Datum konce závazku
+          <span class="label-sub" id="a-end-hint">konec aktuálního termu ze StreamOne ION</span>
         </label>
         <input type="date" id="a-start">
       </div>
@@ -599,42 +528,27 @@
       <div class="results-heading">Výsledek výpočtu</div>
       <div class="breakdown" id="a-breakdown"></div>
       <div id="a-total"></div>
-      <p class="result-note">
-        Výpočet je orientační dle pravidel Microsoft NCE pro-rata fakturace.
-        Skutečná částka na faktuře se může mírně lišit vlivem zaokrouhlení.
-      </p>
+      <p class="result-note" id="a-note"></p>
     </div>
   </div>
 
   <!-- ── TAB: COTERM ──────────────────────────────────────── -->
   <div id="tab-coterm" class="card" role="tabpanel" style="display:none">
 
-    <div class="section-label">Typ závazku</div>
+    <div class="section-label">Délka nové subskripce</div>
     <div class="billing-toggle">
-      <button class="billing-btn active" onclick="setBilling('c', 'annual', this)">
-        Roční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('c', 'monthly-annual', this)">
-        Měsíční fakturace
-        <small>roční závazek</small>
-      </button>
-      <button class="billing-btn" onclick="setBilling('c', 'monthly', this)">
-        Měsíční závazek
-        <small>měsíční fakturace</small>
-      </button>
+      <button class="billing-btn" onclick="setTerm('c',1,this)">Měsíční<small>1 měsíc</small></button>
+      <button class="billing-btn active" onclick="setTerm('c',12,this)">Roční<small>12 měsíců</small></button>
+      <button class="billing-btn" onclick="setTerm('c',36,this)">Tříletý<small>36 měsíců</small></button>
     </div>
 
     <div class="coterm-intro">
       Koterminace umožňuje zarovnat novou subskripci termínově s existující.
-      Nová subskripce tak neskončí za 12 měsíců od nákupu, ale ke stejnému datu
+      Nová subskripce tak neskončí za plný term od nákupu, ale ke stejnému datu
       jako stávající závazek zákazníka — partner zaplatí pouze pro-rata část za kratší období.
     </div>
 
-    <div class="info-box" id="c-info">
-      Zadejte roční cenu nové licence dle ceníku. Pro-rata doplatek se vypočítá
-      za dny od data nákupu do konce existující subskripce, ke které se zarovnáváte.
-    </div>
+    <div class="info-box" id="c-info"></div>
 
     <div class="form-grid">
       <div class="form-group">
@@ -644,8 +558,7 @@
         </label>
         <div class="input-wrap">
           <span class="input-prefix">€</span>
-          <input type="number" id="c-price" class="has-prefix"
-                 placeholder="např. 120.96" min="0.01" step="0.01">
+          <input type="number" id="c-price" class="has-prefix" placeholder="např. 120.96" min="0.01" step="0.01">
         </div>
       </div>
 
@@ -677,28 +590,24 @@
       <div class="results-heading">Výsledek výpočtu</div>
       <div class="breakdown" id="c-breakdown"></div>
       <div id="c-total"></div>
-      <p class="result-note">
-        Výpočet je orientační dle pravidel Microsoft NCE pro-rata fakturace.
-        Skutečná částka na faktuře se může mírně lišit vlivem zaokrouhlení.
-      </p>
+      <p class="result-note" id="c-note"></p>
     </div>
   </div>
 </main>
 
-<!-- ── FOOTER ───────────────────────────────────────────── -->
 <footer>
   &copy; 2026 TD SYNNEX Czech s.r.o. &nbsp;·&nbsp;
   Nástroj určený pro partnery TD SYNNEX &nbsp;·&nbsp;
   Ceny bez DPH
 </footer>
 
-<!-- ── SCRIPT ───────────────────────────────────────────── -->
 <script>
-  // ── State ──────────────────────────────────────────────
-  // 'annual'         = roční fakturace, roční závazek
-  // 'monthly-annual' = měsíční fakturace, roční závazek
-  // 'monthly'        = měsíční závazek, měsíční fakturace
-  const billing = { u: 'annual', a: 'annual', c: 'annual' };
+  // ── State: term (1/12/36 měsíců) + monthly billing flag ──
+  const state = {
+    u: { term: 12, monthly: false },
+    a: { term: 12, monthly: false },
+    c: { term: 12, monthly: false }
+  };
 
   // ── Tab switching ───────────────────────────────────────
   function switchTab(name, btn) {
@@ -709,133 +618,92 @@
     document.getElementById('tab-coterm').style.display   = name === 'coterm'   ? 'block' : 'none';
   }
 
-  // ── Billing toggle ──────────────────────────────────────
-  const INFO = {
-    u: {
-      'annual':         'Zadejte roční cenu licence dle ceníku. Cena se rozpočítá na zbývající dny v aktuálním ročním fakturačním cyklu.',
-      'monthly-annual': 'Zadejte roční cenu licence dle ceníku (P1Y:M). Systém ji automaticky vydělí 12 a výsledek rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
-      'monthly':        'Zadejte měsíční cenu měsíčního závazku dle ceníku. Výsledek se rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
-    },
-    a: {
-      'annual':         'Zadejte roční cenu licence dle ceníku. Doplatek za nové uživatele se vypočítá pro-rata za zbývající dny v ročním závazku.',
-      'monthly-annual': 'Zadejte roční cenu licence dle ceníku (P1Y:M). Systém ji automaticky vydělí 12 a doplatek rozpočítá na zbývající dny v aktuálním měsíčním cyklu.',
-      'monthly':        'Zadejte měsíční cenu měsíčního závazku dle ceníku. Doplatek za nové uživatele se vypočítá za zbývající dny v aktuálním měsíčním cyklu.',
-    },
-    c: {
-      'annual':         'Zadejte roční cenu nové licence dle ceníku (P1Y:Y). Pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.',
-      'monthly-annual': 'Zadejte roční cenu nové licence dle ceníku (P1Y:M). Systém ji vydělí 12 a vypočítá pro-rata doplatek za dny od nákupu do konce existující subskripce.',
-      'monthly':        'Zadejte měsíční cenu nové licence dle ceníku (P1M:M). Pro-rata doplatek se vypočítá za dny od nákupu do konce existujícího měsíčního závazku.',
-    },
-  };
-
-  // Hint pro aktuální licenci — cena z běžící subskripce zákazníka ve StreamOne ION
-  const PRICE_HINT_CUR = {
-    'annual':         'EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION',
-    'monthly-annual': 'EUR / uživatel / rok — dle aktivní subskripce zákazníka ve StreamOne ION',
-    'monthly':        'EUR / uživatel / měsíc — dle aktivní subskripce zákazníka ve StreamOne ION',
-  };
-
-  // Hint pro novou licenci — cena z aktuálního ceníku ve StreamOne ION
-  const PRICE_HINT_NEW = {
-    'annual':         'EUR / uživatel / rok — dle ceníku ve StreamOne ION',
-    'monthly-annual': 'EUR / uživatel / rok — dle ceníku ve StreamOne ION (P1Y:M)',
-    'monthly':        'EUR / uživatel / měsíc — dle ceníku ve StreamOne ION',
-  };
-
-  const PLACEHOLDER = {
-    'annual':         'např. 120.96',
-    'monthly-annual': 'např. 120.96',
-    'monthly':        'např. 10.08',
-  };
-
-  function setBilling(prefix, type, btn) {
-    billing[prefix] = type;
-    btn.closest('.billing-toggle').querySelectorAll('.billing-btn')
-       .forEach(b => b.classList.remove('active'));
+  // ── Term & billing toggles ──────────────────────────────
+  function setTerm(p, months, btn) {
+    state[p].term = months;
+    btn.closest('.billing-toggle').querySelectorAll('.billing-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
 
-    document.getElementById(`${prefix}-info`).textContent = INFO[prefix][type];
+    // Měsíční závazek (1m) je vždy měsíční fakturace → schovej řádek fakturace
+    if (p !== 'c') {
+      const billLabel = document.getElementById(`${p}-bill-label`);
+      const billRow   = document.getElementById(`${p}-bill-row`);
+      if (months === 1) {
+        state[p].monthly = true;
+        billLabel.style.display = 'none';
+        billRow.style.display = 'none';
+      } else {
+        billLabel.style.display = '';
+        billRow.style.display = '';
+      }
+    }
+    updateHints(p);
+  }
 
-    if (prefix === 'u') {
-      document.getElementById('u-hint-old').textContent = PRICE_HINT_CUR[type];
-      document.getElementById('u-hint-new').textContent = PRICE_HINT_NEW[type];
-      document.getElementById('u-price-old').placeholder = PLACEHOLDER[type];
-      document.getElementById('u-price-new').placeholder = PLACEHOLDER[type];
-    } else if (prefix === 'a') {
-      document.getElementById('a-hint').textContent = PRICE_HINT_CUR[type];
-      document.getElementById('a-price').placeholder = PLACEHOLDER[type];
+  function setBill(p, monthly, btn) {
+    state[p].monthly = monthly;
+    btn.closest('.billing-toggle').querySelectorAll('.billing-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateHints(p);
+  }
+
+  // ── Dynamic hint / info text ────────────────────────────
+  function termWord(t) { return t === 1 ? 'měsíční' : t === 36 ? 'tříletý (36měsíční)' : 'roční (12měsíční)'; }
+  function priceUnit(t) { return t === 1 ? 'EUR / uživatel / měsíc' : 'EUR / uživatel / rok'; }
+
+  function infoFor(p, t, monthly) {
+    const billNote = (t !== 1 && monthly)
+      ? ' Pro měsíční fakturaci zadej cenu z ceníku pro měsíční platbu (nese +5 % oproti předplacené variantě).'
+      : '';
+    if (p === 'c') {
+      if (t === 1)  return 'Měsíční závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.' + billNote;
+      if (t === 36) return 'Tříletý (36měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce, ke které zarovnáváš. Plný term je 36 měsíců.' + billNote;
+      return 'Roční (12měsíční) závazek: pro-rata doplatek se vypočítá za dny od nákupu do konce existující subskripce.' + billNote;
+    }
+    const what = p === 'u' ? 'doplatek za upgrade' : 'doplatek za nové uživatele';
+    if (t === 1)  return `Měsíční závazek: ${what} se rozpočítá na zbývající dny aktuálního měsíčního cyklu.` + billNote;
+    if (t === 36) return `Tříletý (36měsíční) závazek: ${what} se rozpočítá pro-rata za zbývající dny až do konce 36měsíčního termu — u změny v 1.–2. roce může přesáhnout jednu roční cenu.` + billNote;
+    return `Roční (12měsíční) závazek: ${what} se rozpočítá pro-rata za zbývající dny do konce ročního termu.` + billNote;
+  }
+
+  function updateHints(p) {
+    const t = state[p].term, m = state[p].monthly;
+    document.getElementById(`${p}-info`).textContent = infoFor(p, t, m);
+    const unit = priceUnit(t);
+    if (p === 'u') {
+      document.getElementById('u-hint-old').textContent = unit + ' — dle aktivní subskripce zákazníka ve StreamOne ION';
+      document.getElementById('u-hint-new').textContent = unit + ' — dle ceníku ve StreamOne ION';
+      document.getElementById('u-end-hint').textContent = t === 1 ? 'konec aktuálního měsíčního cyklu' : 'konec ' + termWord(t) + ' závazku ze StreamOne ION';
+    } else if (p === 'a') {
+      document.getElementById('a-hint').textContent = unit + ' — dle aktivní subskripce zákazníka ve StreamOne ION';
+      document.getElementById('a-end-hint').textContent = t === 1 ? 'konec aktuálního měsíčního cyklu' : 'konec ' + termWord(t) + ' závazku ze StreamOne ION';
     } else {
-      document.getElementById('c-hint').textContent = PRICE_HINT_NEW[type];
-      document.getElementById('c-price').placeholder = PLACEHOLDER[type];
+      document.getElementById('c-hint').textContent = unit + ' — dle ceníku ve StreamOne ION';
     }
   }
 
   // ── Date helpers ────────────────────────────────────────
-
-  // Parse local date string (YYYY-MM-DD) without timezone shift
   function parseDate(str) {
     const [y, m, d] = str.split('-').map(Number);
     return new Date(y, m - 1, d);
   }
-
-  // Inclusive day count between two Date objects
+  // Inclusive day count
   function daysBetween(d1, d2) {
-    const ms = d2 - d1;
-    return Math.round(ms / 86400000) + 1;
+    return Math.round((d2 - d1) / 86400000) + 1;
   }
-
-  // Derive current billing cycle from renewal date and change date.
-  //
-  // Annual billing: one cycle = renewal date minus 1 year → renewal date - 1 day.
-  //
-  // Monthly billing: the billing day-of-month is always the same as the day in
-  // the renewal date (e.g. renewal 27.02.2027 → bills on the 27th each month).
-  // We find the most recent billing date ≤ changeDate and the next one after it.
-  // This correctly handles annual commitments with monthly billing frequency.
-  function getCycle(renewalDate, changeDate, type) {
-    if (type === 'annual') {
-      const ce = new Date(renewalDate);
-      ce.setDate(ce.getDate() - 1);
-      const cs = new Date(renewalDate);
-      cs.setFullYear(cs.getFullYear() - 1);
-      return { cs, ce };
-    }
-
-    // 'monthly-annual': billing day derived from annual renewal date (e.g. 27 from 27.02.2027)
-    // 'monthly':        billing day derived from next monthly renewal date
-    // Both use the same logic — billing day = day-of-month of the entered renewal date
-    const billingDay = renewalDate.getDate();
-
-    // Most recent billing date on or before changeDate
+  // Měsíční cyklus kolem data změny (jen pro 1měsíční závazek)
+  function monthlyCycle(endDate, changeDate) {
+    const billingDay = endDate.getDate();
     let cs = new Date(changeDate.getFullYear(), changeDate.getMonth(), billingDay);
-    if (cs > changeDate) {
-      cs = new Date(changeDate.getFullYear(), changeDate.getMonth() - 1, billingDay);
-    }
-
-    // Next billing date = cs + 1 month; cycleEnd = day before that
-    const nextBilling = new Date(cs.getFullYear(), cs.getMonth() + 1, billingDay);
-    const ce = new Date(nextBilling);
+    if (cs > changeDate) cs = new Date(changeDate.getFullYear(), changeDate.getMonth() - 1, billingDay);
+    const ce = new Date(cs.getFullYear(), cs.getMonth() + 1, billingDay);
     ce.setDate(ce.getDate() - 1);
-
     return { cs, ce };
   }
 
-  // Daily rate per user:
-  // 'annual'         → roční cena (P1Y:Y) / dny v ročním cyklu
-  // 'monthly-annual' → roční cena (P1Y:M) / 12 / dny v měsíčním cyklu
-  // 'monthly'        → měsíční cena (P1M:M) / dny v měsíčním cyklu
-  function dailyRate(price, totalDays, type) {
-    if (type === 'monthly-annual') return (price / 12) / totalDays;
-    return price / totalDays;
-  }
-
   // ── Formatting ──────────────────────────────────────────
-  const eurFmt = new Intl.NumberFormat('cs-CZ', {
-    style: 'currency', currency: 'EUR',
-    minimumFractionDigits: 2, maximumFractionDigits: 2
-  });
+  const eurFmt = new Intl.NumberFormat('cs-CZ', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   const dateFmt = new Intl.DateTimeFormat('cs-CZ', { day: 'numeric', month: 'numeric', year: 'numeric' });
-
   function eur(v)  { return eurFmt.format(v); }
   function fdate(d){ return dateFmt.format(d); }
   function days(n) {
@@ -851,9 +719,7 @@
     el.classList.add('visible');
     document.getElementById(`${p}-results`).classList.remove('visible');
   }
-  function clearErr(p) {
-    document.getElementById(`${p}-err`).classList.remove('visible');
-  }
+  function clearErr(p) { document.getElementById(`${p}-err`).classList.remove('visible'); }
 
   function row(type, label, value) {
     return `<div class="breakdown-row ${type}">
@@ -861,125 +727,136 @@
       <span class="b-value">${value}</span>
     </div>`;
   }
-
   function totalBlock(isCredit, label, amount) {
-    const cls = isCredit ? 'credit-back' : 'pay';
-    return `<div class="result-total ${cls}">
+    return `<div class="result-total ${isCredit ? 'credit-back' : 'pay'}">
       <span class="total-label">${label}</span>
       <span class="total-value">${eur(amount)}</span>
     </div>`;
   }
 
+  const ORIENT_NOTE = 'Výpočet je orientační dle pravidel Microsoft NCE pro-rata fakturace. Skutečná částka na faktuře se může mírně lišit vlivem zaokrouhlení.';
+  function billingNote(t, monthly) {
+    if (t !== 1 && monthly) {
+      return ' Při měsíční fakturaci se tato celková hodnota rozloží do měsíčních faktur do konce závazku.';
+    }
+    return '';
+  }
+
   // ── CALCULATOR 1: Upgrade ───────────────────────────────
   function calcUpgrade() {
     clearErr('u');
-    const type        = billing.u;
-    const priceOld    = parseFloat(document.getElementById('u-price-old').value);
-    const priceNew    = parseFloat(document.getElementById('u-price-new').value);
-    const renewalVal  = document.getElementById('u-start').value;
-    const changeVal   = document.getElementById('u-change').value;
-    const users       = parseInt(document.getElementById('u-users').value);
+    const t = state.u.term, monthly = state.u.monthly;
+    const priceOld = parseFloat(document.getElementById('u-price-old').value);
+    const priceNew = parseFloat(document.getElementById('u-price-new').value);
+    const endVal   = document.getElementById('u-start').value;
+    const changeVal= document.getElementById('u-change').value;
+    const users    = parseInt(document.getElementById('u-users').value);
 
-    if (!renewalVal)  return showErr('u', 'Zadejte datum obnovy předplatného (renewal date).');
-    if (!changeVal)   return showErr('u', 'Zadejte datum upgradu.');
+    if (!endVal)    return showErr('u', 'Zadejte datum konce závazku.');
+    if (!changeVal) return showErr('u', 'Zadejte datum upgradu.');
     if (isNaN(priceOld) || priceOld <= 0) return showErr('u', 'Zadejte platnou cenu aktuální licence (kladné číslo).');
     if (isNaN(priceNew) || priceNew <= 0) return showErr('u', 'Zadejte platnou cenu nové licence (kladné číslo).');
-    if (isNaN(users)   || users < 1)      return showErr('u', 'Zadejte platný počet uživatelů (min. 1).');
+    if (isNaN(users) || users < 1)        return showErr('u', 'Zadejte platný počet uživatelů (min. 1).');
 
-    const renewalDate = parseDate(renewalVal);
-    const changeDate  = parseDate(changeVal);
+    const endDate = parseDate(endVal);
+    const changeDate = parseDate(changeVal);
+    if (changeDate >= endDate) return showErr('u', 'Datum upgradu musí být před koncem závazku.');
 
-    if (changeDate >= renewalDate) return showErr('u', 'Datum upgradu musí být před datem obnovy předplatného.');
+    let drOld, drNew, remDays, periodRow;
 
-    const { cs, ce } = getCycle(renewalDate, changeDate, type);
-    const totalDays  = daysBetween(cs, ce);
-    const remDays    = daysBetween(changeDate, ce);
+    if (t === 1) {
+      const { cs, ce } = monthlyCycle(endDate, changeDate);
+      const totalDays = daysBetween(cs, ce);
+      remDays = daysBetween(changeDate, ce);
+      if (changeDate < cs) return showErr('u', 'Datum upgradu předchází začátku aktuálního měsíčního cyklu. Zkontrolujte konec závazku.');
+      drOld = priceOld / totalDays;
+      drNew = priceNew / totalDays;
+      periodRow = row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
+                + row('neutral', 'Celkem dní v cyklu', days(totalDays));
+    } else {
+      // 12 nebo 36 měsíců: pro-rata do konce závazku, denní sazba = roční cena / 365
+      drOld = priceOld / 365;
+      drNew = priceNew / 365;
+      remDays = daysBetween(changeDate, endDate);
+      periodRow = row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate));
+    }
 
-    if (changeDate < cs) return showErr('u', 'Datum upgradu předchází začátku aktuálního cyklu. Zkontrolujte renewal date.');
-
-    const drOld  = dailyRate(priceOld, totalDays, type);
-    const drNew  = dailyRate(priceNew, totalDays, type);
     const credit = drOld * remDays * users;
     const charge = drNew * remDays * users;
-    const net    = charge - credit;
+    const net = charge - credit;
 
-    const periodLabel = type === 'annual' ? 'roční cyklus' : 'měsíční cyklus';
-
-    document.getElementById('u-breakdown').innerHTML = [
-      row('neutral', `Aktuální ${periodLabel}`,         `${fdate(cs)} – ${fdate(ce)}`),
-      row('neutral', 'Celkem dní v cyklu',              days(totalDays)),
-      row('neutral', 'Zbývající dní od data upgradu',   days(remDays)),
-      row('neutral', 'Denní sazba – aktuální licence',  `${eur(drOld)} / uživatel`),
-      row('neutral', 'Denní sazba – nová licence',      `${eur(drNew)} / uživatel`),
-      row('credit',  `Pro-rata refund za aktuální licenci (${users} už. × ${days(remDays)})`, `− ${eur(credit)}`),
-      row('charge',  `Pro-rata doplatek za novou licenci (${users} už. × ${days(remDays)})`,  `+ ${eur(charge)}`),
-    ].join('');
+    document.getElementById('u-breakdown').innerHTML =
+      periodRow
+      + row('neutral', 'Zbývajících dní od data upgradu', days(remDays))
+      + row('neutral', 'Denní sazba – aktuální licence', `${eur(drOld)} / uživatel`)
+      + row('neutral', 'Denní sazba – nová licence', `${eur(drNew)} / uživatel`)
+      + row('credit',  `Pro-rata refund za aktuální licenci (${users} už. × ${days(remDays)})`, `− ${eur(credit)}`)
+      + row('charge',  `Pro-rata doplatek za novou licenci (${users} už. × ${days(remDays)})`, `+ ${eur(charge)}`);
 
     document.getElementById('u-total').innerHTML = net >= 0
       ? totalBlock(false, 'Celkový doplatek partnera', net)
       : totalBlock(true,  'Kredit partnera (nová licence levnější)', Math.abs(net));
 
+    document.getElementById('u-note').textContent = ORIENT_NOTE + billingNote(t, monthly);
     document.getElementById('u-results').classList.add('visible');
   }
 
   // ── CALCULATOR 2: Add Seats ─────────────────────────────
   function calcAddSeats() {
     clearErr('a');
-    const type       = billing.a;
-    const price      = parseFloat(document.getElementById('a-price').value);
-    const renewalVal = document.getElementById('a-start').value;
-    const changeVal  = document.getElementById('a-change').value;
-    const addUsers   = parseInt(document.getElementById('a-users-add').value);
+    const t = state.a.term, monthly = state.a.monthly;
+    const price    = parseFloat(document.getElementById('a-price').value);
+    const endVal   = document.getElementById('a-start').value;
+    const changeVal= document.getElementById('a-change').value;
+    const addUsers = parseInt(document.getElementById('a-users-add').value);
 
-    if (!renewalVal) return showErr('a', 'Zadejte datum obnovy předplatného (renewal date).');
-    if (!changeVal)  return showErr('a', 'Zadejte datum navýšení licencí.');
-    if (isNaN(price) || price <= 0)      return showErr('a', 'Zadejte platnou cenu licence (kladné číslo).');
-    if (isNaN(addUsers) || addUsers < 1) return showErr('a', 'Zadejte platný počet přidávaných uživatelů (min. 1).');
+    if (!endVal)    return showErr('a', 'Zadejte datum konce závazku.');
+    if (!changeVal) return showErr('a', 'Zadejte datum navýšení licencí.');
+    if (isNaN(price) || price <= 0)        return showErr('a', 'Zadejte platnou cenu licence (kladné číslo).');
+    if (isNaN(addUsers) || addUsers < 1)   return showErr('a', 'Zadejte platný počet přidávaných uživatelů (min. 1).');
 
-    const renewalDate = parseDate(renewalVal);
-    const changeDate  = parseDate(changeVal);
+    const endDate = parseDate(endVal);
+    const changeDate = parseDate(changeVal);
+    if (changeDate >= endDate) return showErr('a', 'Datum navýšení musí být před koncem závazku.');
 
-    if (changeDate >= renewalDate) return showErr('a', 'Datum navýšení musí být před datem obnovy předplatného.');
+    let dr, remDays, periodRow, dayBase;
 
-    const { cs, ce } = getCycle(renewalDate, changeDate, type);
-    const totalDays  = daysBetween(cs, ce);
-    const remDays    = daysBetween(changeDate, ce);
+    if (t === 1) {
+      const { cs, ce } = monthlyCycle(endDate, changeDate);
+      const totalDays = daysBetween(cs, ce);
+      remDays = daysBetween(changeDate, ce);
+      if (changeDate < cs) return showErr('a', 'Datum navýšení předchází začátku aktuálního měsíčního cyklu. Zkontrolujte konec závazku.');
+      dr = price / totalDays;
+      dayBase = 'měsíční cena / dní v měsíci';
+      periodRow = row('neutral', 'Aktuální měsíční cyklus', `${fdate(cs)} – ${fdate(ce)}`)
+                + row('neutral', 'Celkem dní v cyklu', days(totalDays));
+    } else {
+      dr = price / 365;
+      remDays = daysBetween(changeDate, endDate);
+      dayBase = 'roční cena / 365';
+      periodRow = row('neutral', `Konec ${termWord(t)} závazku`, fdate(endDate));
+    }
 
-    if (changeDate < cs) return showErr('a', 'Datum navýšení předchází začátku aktuálního cyklu. Zkontrolujte renewal date.');
-
-    const dr     = dailyRate(price, totalDays, type);
     const charge = dr * remDays * addUsers;
-    const cycleLabel  = type === 'annual' ? 'roční cyklus' : 'měsíční cyklus';
-    const periodPrice = type === 'monthly-annual' ? price / 12 : price;
-    const periodLabel = type === 'annual' ? 'rok' : 'měsíc';
 
-    document.getElementById('a-breakdown').innerHTML = [
-      row('neutral', `Aktuální ${cycleLabel}`,                `${fdate(cs)} – ${fdate(ce)}`),
-      row('neutral', 'Celkem dní v cyklu',                   days(totalDays)),
-      row('neutral', 'Zbývající dní od data navýšení',        days(remDays)),
-      row('neutral', `Cena licence za ${periodLabel} / už.`, eur(periodPrice)),
-      row('neutral', 'Denní sazba',                           `${eur(dr)} / uživatel`),
-      row('charge',  `Pro-rata doplatek za nové uživatele (${addUsers} už. × ${days(remDays)})`, `+ ${eur(charge)}`),
-    ].join('');
+    document.getElementById('a-breakdown').innerHTML =
+      periodRow
+      + row('neutral', 'Zbývajících dní od data navýšení', days(remDays))
+      + row('neutral', 'Cena licence', `${eur(price)} / ${t === 1 ? 'měsíc' : 'rok'} / už.`)
+      + row('neutral', `Denní sazba (${dayBase})`, `${eur(dr)} / uživatel`)
+      + row('charge',  `Pro-rata doplatek za nové uživatele (${addUsers} už. × ${days(remDays)})`, `+ ${eur(charge)}`);
 
     document.getElementById('a-total').innerHTML =
       totalBlock(false, `Celkový doplatek za ${addUsers} nových uživatelů`, charge);
 
+    document.getElementById('a-note').textContent = ORIENT_NOTE + billingNote(t, monthly);
     document.getElementById('a-results').classList.add('visible');
   }
 
-  // ── CALCULATOR 3: Coterminous new subscription ──────────
-  // Pro-rata = (roční ekvivalent / dny v plném cyklu) × dny služby × uživatelé
-  // Monthly-annual: (annualPrice/12 × 12) / fullYearDays = annualPrice / fullYearDays
-  // Monthly:        (monthlyPrice × 12)  / fullYearDays
-  function dailyRateCoterm(price, fullDays, type) {
-    if (type === 'monthly') return (price * 12) / fullDays;
-    return price / fullDays; // 'annual' i 'monthly-annual' — cena je roční
-  }
-
+  // ── CALCULATOR 3: Koterminace ───────────────────────────
   function calcCoterm() {
     clearErr('c');
-    const type        = billing.c;
+    const t = state.c.term;
     const price       = parseFloat(document.getElementById('c-price').value);
     const purchaseVal = document.getElementById('c-purchase').value;
     const alignVal    = document.getElementById('c-align').value;
@@ -992,48 +869,43 @@
 
     const purchaseDate = parseDate(purchaseVal);
     const alignDate    = parseDate(alignVal);
-
     if (alignDate <= purchaseDate) return showErr('c', 'Datum konce existující subskripce musí být po datu nákupu.');
 
-    // Plný cyklus od data nákupu (1 rok nebo 1 měsíc)
+    // Plný term od data nákupu (1 / 12 / 36 měsíců)
     const fullEnd = new Date(purchaseDate);
-    if (type === 'monthly') {
-      fullEnd.setMonth(fullEnd.getMonth() + 1);
-      fullEnd.setDate(fullEnd.getDate() - 1);
-    } else {
-      fullEnd.setFullYear(fullEnd.getFullYear() + 1);
-      fullEnd.setDate(fullEnd.getDate() - 1);
-    }
+    fullEnd.setMonth(fullEnd.getMonth() + t);
+    fullEnd.setDate(fullEnd.getDate() - 1);
 
     if (alignDate > fullEnd) return showErr('c',
-      `Datum konce existující subskripce přesahuje jeden ${type === 'monthly' ? 'měsíční' : 'roční'} závazek od data nákupu (max. ${fdate(fullEnd)}).`
-    );
+      `Datum konce existující subskripce přesahuje plný ${termWord(t)} závazek od data nákupu (max. ${fdate(fullEnd)}).`);
 
-    const fullDays     = daysBetween(purchaseDate, fullEnd);
-    const serviceDays  = daysBetween(purchaseDate, alignDate);
-    const dr           = dailyRateCoterm(price, fullDays, type);
-    const charge       = dr * serviceDays * users;
-    const saving       = (dr * fullDays * users) - charge;
+    const fullDays    = daysBetween(purchaseDate, fullEnd);
+    const serviceDays = daysBetween(purchaseDate, alignDate);
+    const dr          = t === 1 ? price / fullDays : price / 365;  // měsíční cena přes měsíc, jinak roční/365
+    const charge      = dr * serviceDays * users;
+    const fullValue   = dr * fullDays * users;
+    const saving      = fullValue - charge;
 
-    const periodLabel  = type === 'annual' ? 'rok' : type === 'monthly-annual' ? 'rok (P1Y:M)' : 'měsíc (P1M:M)';
-    const cycleLabel   = type === 'monthly' ? 'měsíční závazek' : 'roční závazek';
-
-    document.getElementById('c-breakdown').innerHTML = [
-      row('neutral', `Plný ${cycleLabel} od nákupu`,       `${fdate(purchaseDate)} – ${fdate(fullEnd)} (${days(fullDays)})`),
-      row('neutral', 'Zarovnáno na konec',                  `${fdate(alignDate)}`),
-      row('neutral', 'Dní skutečné služby',                 days(serviceDays)),
-      row('neutral', `Cena za ${periodLabel} / uživatel`,  eur(price)),
-      row('neutral', 'Denní sazba',                         `${eur(dr)} / uživatel`),
-      row('neutral', `Počet uživatelů`,                     `${users} uživatelů`),
-      row('charge',  `Pro-rata doplatek (${users} už. × ${days(serviceDays)})`, `+ ${eur(charge)}`),
-      row('credit',  'Úspora oproti plnému závazku',         `− ${eur(saving)}`),
-    ].join('');
+    document.getElementById('c-breakdown').innerHTML =
+      row('neutral', `Plný ${termWord(t)} závazek od nákupu`, `${fdate(purchaseDate)} – ${fdate(fullEnd)} (${days(fullDays)})`)
+      + row('neutral', 'Zarovnáno na konec', fdate(alignDate))
+      + row('neutral', 'Dní skutečné služby', days(serviceDays))
+      + row('neutral', 'Cena licence', `${eur(price)} / ${t === 1 ? 'měsíc' : 'rok'} / už.`)
+      + row('neutral', 'Denní sazba', `${eur(dr)} / uživatel`)
+      + row('neutral', 'Počet uživatelů', `${users}`)
+      + row('charge',  `Pro-rata doplatek (${users} už. × ${days(serviceDays)})`, `+ ${eur(charge)}`)
+      + row('credit',  'Úspora oproti plnému závazku', `− ${eur(saving)}`);
 
     document.getElementById('c-total').innerHTML =
       totalBlock(false, 'Celkový doplatek za koterminovanou subskripci', charge);
 
+    document.getElementById('c-note').textContent = ORIENT_NOTE;
     document.getElementById('c-results').classList.add('visible');
   }
+
+  // ── Init ────────────────────────────────────────────────
+  ['u', 'a', 'c'].forEach(updateHints);
 </script>
+
 </body>
 </html>
