@@ -371,7 +371,7 @@
 <body>
 
 <header>
-  <img class="header-logo" src="logo.png" alt="TD SYNNEX"
+  <img class="header-logo" src="logo/logo.png" alt="TD SYNNEX"
     onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'TD SYNNEX',style:'color:#fff;font-weight:700;font-size:1.05rem;letter-spacing:.04em'}))">
   <div class="header-divider"></div>
   <span class="header-title">Microsoft NCE Kalkulátor</span>
@@ -720,7 +720,7 @@
   }
 
   // Rozpad závazku dle fakturace.
-  // drPerDay = denní sazba na uživatele (cena celého termu / dní termu; u upgradu může být záporná = kredit)
+  // drPerDay = denní sazba na uživatele
   // Vrací: { now, count, perPeriod, nextEnd, interval, commitment }
   function splitBilling(drPerDay, users, changeDate, endDate, billing) {
     const commitment = drPerDay * daysBetween(changeDate, endDate) * users;
@@ -733,8 +733,10 @@
     const now = drPerDay * daysBetween(changeDate, nbMinus1) * users;
     const months = (endDate.getFullYear() - nb.getFullYear()) * 12 + (endDate.getMonth() - nb.getMonth());
     const count = Math.max(0, Math.round(months / interval));
-    const periodDays = billing === 'monthly' ? 365 / 12 : 365;   // nominální délka období
-    const perPeriod = drPerDay * periodDays * users;
+    // Zbývající závazek po první faktuře rovnoměrně rozdělíme mezi počet dalších plateb.
+    // Používáme (commitment - now) / count místo nominálních 365 dní, aby součet
+    // odpovídal celkové částce i při přestupných rocích.
+    const perPeriod = count > 0 ? (commitment - now) / count : 0;
     return { now, count, perPeriod, nextEnd: nbMinus1, interval, commitment };
   }
 
